@@ -2,6 +2,11 @@ import { isUrl } from '../utils/utils';
 
 const menuData = [
   {
+    name: '考试管理',
+    icon: 'dashboard',
+    path: 'exams',
+  },
+  {
     name: 'dashboard',
     icon: 'dashboard',
     path: 'dashboard',
