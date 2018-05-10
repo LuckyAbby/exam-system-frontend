@@ -190,6 +190,8 @@ class BasicLayout extends React.PureComponent {
       location,
     } = this.props;
     const bashRedirect = this.getBashRedirect();
+    const { params } = this.props.match;
+    const menuData = getMenuData(params);    
     const layout = (
       <Layout>
         <SiderMenu
@@ -198,7 +200,7 @@ class BasicLayout extends React.PureComponent {
           // If you do not have the Authorized parameter
           // you will be forced to jump to the 403 interface without permission
           Authorized={Authorized}
-          menuData={getMenuData()}
+          menuData={menuData}
           collapsed={collapsed}
           location={location}
           isMobile={this.state.isMobile}
@@ -235,6 +237,7 @@ class BasicLayout extends React.PureComponent {
                 />
               ))}
               <Redirect exact from="/" to={bashRedirect} />
+              {/* <Redirect exact from="/exam/:id" to="/exam/:id/config" />               */}
               <Route render={NotFound} />
             </Switch>
           </Content>
