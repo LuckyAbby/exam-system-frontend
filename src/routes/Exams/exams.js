@@ -1,33 +1,40 @@
 import React, { PureComponent } from 'react';
 import { Card, Button, Form, Modal, Input, Table } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-
+import request from '../../utils/request';
 import styles from './exams.less';
 
 const FormItem = Form.Item;
 const state = ['未上线', '已上线', '已下线'];
 
 const CreateForm = Form.create()(props => {
-  const { modalVisible, form, handleAdd, handleModalVisible } = props;
+  const { modalVisible, form, handleModalVisible } = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       form.resetFields();
-      handleAdd(fieldsValue);
+      request('/api/exam', {
+        method: 'POST',
+        body: {
+          name: fieldsValue.name,
+        },
+      });
     });
   };
   return (
     <Modal
-      title="新建规则"
+      title="新建考试"
       visible={modalVisible}
       onOk={okHandle}
       onCancel={() => handleModalVisible()}
     >
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="描述">
-        {form.getFieldDecorator('desc', {
-          rules: [{ required: true, message: 'Please input some description...' }],
-        })(<Input placeholder="请输入" />)}
-      </FormItem>
+      <form action='/api/exam' method='post'>
+        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="考试名称">
+          {form.getFieldDecorator('name', {
+            rules: [{ required: true, message: '请输入考试名称' }],
+          })(<Input placeholder="请输入考试名称" />)}
+        </FormItem>
+      </form>
     </Modal>
   );
 });
