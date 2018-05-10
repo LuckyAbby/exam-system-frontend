@@ -92,10 +92,10 @@ export const getRouterData = app => {
     '/exam/:id/config': {
       component: dynamicWrapper(app, [], () => import('../routes/Exam/Config')),
     },
-    '/exam/:id/question': {
+    '/exam/:id/question/list': {
       component: dynamicWrapper(app, [], () => import('../routes/Question')),
     },
-    '/exam/:id/paper': {
+    '/exam/:id/paper/list': {
       component: dynamicWrapper(app, [], () => import('../routes/Paper')),
     },
   };
