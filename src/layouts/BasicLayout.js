@@ -237,7 +237,11 @@ class BasicLayout extends React.PureComponent {
                 />
               ))}
               <Redirect exact from="/" to={bashRedirect} />
-              {/* <Redirect exact from="/exam/:id" to="/exam/:id/config" />               */}
+              {
+                params && params.id && (
+                  <Redirect exact from="/exam/:id" to={`/exam/${params.id}/config`} />              
+                )
+              }
               <Route render={NotFound} />
             </Switch>
           </Content>
