@@ -24,7 +24,6 @@ function RouterConfig({ history, app }) {
       <ConnectedRouter history={history}>
         <Switch>
           <Route path="/user" component={UserLayout} />
-          <Route exact path="/exam" component={ExamLayout} />
           <Route path="/exam/:id" component={BasicLayout} />
           <AuthorizedRoute
             path="/"

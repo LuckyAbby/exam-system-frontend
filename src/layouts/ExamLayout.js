@@ -1,11 +1,13 @@
 import React, { Fragment } from 'react';
-import { Link, Redirect, Switch, Route } from 'dva/router';
+import { Link, Redirect, Switch } from 'dva/router';
 import DocumentTitle from 'react-document-title';
 import { Icon } from 'antd';
+import Authorized from '../utils/Authorized';
 import GlobalFooter from '../components/GlobalFooter';
 import styles from './UserLayout.less';
 import { getRoutes } from '../utils/utils';
 
+const { AuthorizedRoute, check } = Authorized;
 const links = [
   {
     key: 'help',
@@ -40,29 +42,47 @@ class UserLayout extends React.PureComponent {
     }
     return title;
   }
+  getBashRedirect = () => {
+    // According to the url parameter to redirect
+    // 这里是重定向的,重定向到 url 的 redirect 参数所示地址
+    const urlParams = new URL(window.location.href);
+
+    const redirect = urlParams.searchParams.get('redirect');
+    // Remove the parameters in the url
+    if (redirect) {
+      urlParams.searchParams.delete('redirect');
+      window.history.replaceState(null, 'redirect', urlParams.href);
+    } else {
+      const { routerData } = this.props;
+      // get the first authorized route path in routerData
+      const authorizedPath = Object.keys(routerData).find(
+        item => check(routerData[item].authority, item) && item !== '/'
+      );
+      return authorizedPath;
+    }
+    return redirect;
+  };
   render() {
     const { routerData, match } = this.props;
+    const bashRedirect = this.getBashRedirect();
+    console.log(routerData);
+    
     return (
       <DocumentTitle title={this.getPageTitle()}>
         <div className={styles.container}>
           <div className={styles.content}>
-            <div className={styles.top}>
-              <div className={styles.header}>
-                <Link to="/">
-                  <span className={styles.title}>exam</span>
-                </Link>
-              </div>
-              <div className={styles.desc}>最好用的exam</div>
-            </div>
             <Switch>
               {getRoutes(match.path, routerData).map(item => (
-                <Route
+                <AuthorizedRoute
                   key={item.key}
                   path={item.path}
                   component={item.component}
                   exact={item.exact}
+                  authority={item.authority}
+                  redirectPath="/exception/403"
                 />
               ))}
+              <Redirect exact from="/" to={bashRedirect} />     
             </Switch>
           </div>
           <GlobalFooter links={links} copyright={copyright} />

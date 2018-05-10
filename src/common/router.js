@@ -84,14 +84,19 @@ export const getRouterData = app => {
 
     // 考试列表
     '/exam': {
-      component: dynamicWrapper(app, [], () => import('../layouts/ExamLayout')),
-      // component: dynamicWrapper(app, [], () => import('../routes/Exam')),      
+      component: dynamicWrapper(app, [], () => import('../routes/Exam')),
     },
     '/exam/:id': {
       component: dynamicWrapper(app, ['user'], () => import('../layouts/BasicLayout')),
     },
     '/exam/:id/config': {
       component: dynamicWrapper(app, [], () => import('../routes/Exam/Config')),
+    },
+    '/exam/:id/question': {
+      component: dynamicWrapper(app, [], () => import('../routes/Question')),
+    },
+    '/exam/:id/paper': {
+      component: dynamicWrapper(app, [], () => import('../routes/Paper')),
     },
   };
   // Get name from ./menu.js or just set it in the router data.

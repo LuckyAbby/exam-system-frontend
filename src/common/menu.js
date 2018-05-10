@@ -23,13 +23,49 @@ const menuData = [
   },
   {
     name: '考试管理',
-    icon: 'user',
+    icon: 'dashboard',
     path: 'exam',
     authority: 'admin',
     children: [
       {
         name: '考试信息',
         path: ':id/config',
+      },
+    ],
+  },
+  {
+    name: '试题管理',
+    icon: 'question-circle-o',
+    path: 'exam/:id/question',
+    authority: 'admin',
+    children: [
+      {
+        name: '试题列表',
+        path: 'list',
+      },
+    ],
+  },
+  {
+    name: '试卷管理',
+    icon: 'file-text',
+    path: 'exam/:id/paper',
+    authority: 'admin',
+    children: [
+      {
+        name: '试卷列表',
+        path: 'list',
+      },
+    ],
+  },
+  {
+    name: '考生管理',
+    icon: 'user',
+    path: 'exam/:id/examinee',
+    authority: 'admin',
+    children: [
+      {
+        name: '考生列表',
+        path: 'list',
       },
     ],
   },
