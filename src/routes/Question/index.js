@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Modal, Input, Table, Card, Form, Radio, InputNumber } from 'antd';
-// import { Link } from 'dva/router'; 
+import { Link } from 'dva/router'; 
 // import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import request from '../../utils/request';
 import styles from './index.less';
@@ -79,6 +79,9 @@ export default class Question extends Component {
 
   render() {
     const { modalVisible } = this.state;
+    const { match } = this.props;
+    const { params } = match;
+    const { id } = params;
     const data = [{
       id: 1,
       name: '试题1',
@@ -136,12 +139,12 @@ export default class Question extends Component {
     return (
       <div>
         <h2>试题管理</h2>
-        <Card border={false}>
+        <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
             <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
-                新建
+              <Button icon="plus" type="primary">
+                <Link to={`/exam/${id}/question/add`}>新建试题</Link>
               </Button>
             </div>
             <Table dataSource={data} columns={columns} />
