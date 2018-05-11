@@ -65,6 +65,7 @@ export default class GlobalHeader extends PureComponent {
       onNoticeVisibleChange,
       onMenuClick,
       onNoticeClear,
+      title,
     } = this.props;
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
@@ -84,6 +85,7 @@ export default class GlobalHeader extends PureComponent {
       </Menu>
     );
     const noticeData = this.getNoticeData();
+    
     return (
       <div className={styles.header}>
         {isMobile && [
@@ -92,11 +94,24 @@ export default class GlobalHeader extends PureComponent {
           </Link>,
           <Divider type="vertical" key="line" />,
         ]}
-        <Icon
-          className={styles.trigger}
-          type={collapsed ? 'menu-unfold' : 'menu-fold'}
-          onClick={this.toggle}
-        />
+        {
+          title 
+          ? (
+            <span className={styles.titleWrapper}>
+              <Link to="/" className={styles.title} key="logo">
+                <Icon type="home" /> &nbsp;&nbsp;{title}
+              </Link>
+            </span>
+            )
+          : (
+            <Icon
+              className={styles.trigger}
+              type={collapsed ? 'menu-unfold' : 'menu-fold'}
+              onClick={this.toggle}
+            />
+          )
+        }
+        
         <div className={styles.right}>
           <HeaderSearch
             className={`${styles.action} ${styles.search}`}

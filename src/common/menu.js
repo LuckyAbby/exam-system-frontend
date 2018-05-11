@@ -59,7 +59,7 @@ const menuData = [
   },
   {
     name: '考生管理',
-    icon: 'user',
+    icon: 'team',
     path: 'exam/:id/examinee',
     authority: 'admin',
     children: [

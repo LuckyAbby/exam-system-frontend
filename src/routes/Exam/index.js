@@ -165,9 +165,8 @@ export default class Exam extends PureComponent {
       handleAdd: this.handleAdd,
       handleModalVisible: this.handleModalVisible,
     };
-
     return (
-      <PageHeaderLayout title="试卷管理">
+      <div>
         <Card border={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
@@ -180,7 +179,7 @@ export default class Exam extends PureComponent {
           </div>
         </Card>
         <CreateForm {...parentMethods} modalVisible={modalVisible} />
-      </PageHeaderLayout>
+      </div>
     );
   }
 }
