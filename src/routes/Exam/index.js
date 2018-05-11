@@ -29,7 +29,7 @@ const CreateForm = Form.create()(props => {
       onOk={okHandle}
       onCancel={() => handleModalVisible()}
     >
-      <form action='/api/exam' method='post'>
+      <form action="/api/exam" method="post">
         <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="考试名称">
           {form.getFieldDecorator('name', {
             rules: [{ required: true, message: '请输入考试名称' }],
@@ -94,7 +94,7 @@ export default class Exam extends PureComponent {
         title: 'id',
         key: 'id',
         dataIndex: 'id',
-        render: (val) => (<Link to={`/exam/${val}`}>{val}</Link>),
+        render: val => <Link to={`/exam/${val}`}>{val}</Link>,
       },
       {
         title: '考试名称',
@@ -176,7 +176,7 @@ export default class Exam extends PureComponent {
                 新建
               </Button>
             </div>
-            <Table bordered="true" dataSource={data} columns={columns} />
+            <Table dataSource={data} columns={columns} />
           </div>
         </Card>
         <CreateForm {...parentMethods} modalVisible={modalVisible} />
