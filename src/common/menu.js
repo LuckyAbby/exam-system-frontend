@@ -43,6 +43,10 @@ const menuData = [
         name: '试题列表',
         path: 'list',
       },
+      {
+        name: '添加试题',
+        path: 'add',
+      },
     ],
   },
   {
