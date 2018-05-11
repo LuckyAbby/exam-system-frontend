@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Modal, Input, Table, Card, Form, Radio, InputNumber } from 'antd';
-// import { Link } from 'dva/router';
+// import { Link } from 'dva/router'; 
 // import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import request from '../../utils/request';
 import styles from './index.less';
@@ -50,8 +50,7 @@ const CreateForm = Form.create()(props => {
               <Radio value={2}>判断题</Radio>
               <Radio value={3}>问答题</Radio>
               <Radio value={4}>主观题</Radio>
-            </RadioGroup>
-          )}
+            </RadioGroup>)}
         </FormItem>
         <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="试题分数">
           {form.getFieldDecorator('score', {
@@ -74,72 +73,61 @@ export default class Question extends Component {
     });
   };
 
-  renderForm = () => <div>查询表单条件</div>;
+  renderForm = () => (
+    <div>查询表单条件</div>
+  );
 
   render() {
     const { modalVisible } = this.state;
-    const data = [
-      {
-        id: 1,
-        name: '试题1',
-        type: 1,
-        create_time: '2018-04-30 06:55:31',
-        score: 1,
-        exam_id: 1,
-      },
-      {
-        id: 1,
-        name: '试题2',
-        type: 2,
-        create_time: '2018-04-30 06:55:31',
-        score: 2,
-        exam_id: 1,
-      },
-      {
-        id: 1,
-        name: '试题3',
-        type: 1,
-        create_time: '2018-04-30 06:55:31',
-        score: 1,
-        exam_id: 1,
-      },
-    ];
-    const columns = [
-      {
-        title: 'id',
-        dataIndex: 'id',
-      },
-      {
-        title: '试题名称',
-        dataIndex: 'name',
-      },
-      {
-        title: '试题类型',
-        dataIndex: 'type',
-        render: val => <p>{TYPE[val]}</p>,
-      },
-      {
-        title: '创建时间',
-        dataIndex: 'create_time',
-      },
-      {
-        title: '分数',
-        dataIndex: 'score',
-      },
-      {
-        title: '考试id',
-        dataIndex: 'exam_id',
-      },
-      {
-        title: '操作',
-        render: () => (
-          <div className={styles.action}>
-            <a href="">删除</a>
-            <a href="">编辑</a>
-          </div>
-        ),
-      },
-    ];
+    const data = [{
+      id: 1,
+      name: '试题1',
+      type: 1,
+      create_time: '2018-04-30 06:55:31',
+      score: 1,
+      exam_id: 1,
+    }, {
+      id: 1,
+      name: '试题2',
+      type: 2,
+      create_time: '2018-04-30 06:55:31',
+      score: 2,
+      exam_id: 1,
+    }, {
+      id: 1,
+      name: '试题3',
+      type: 1,
+      create_time: '2018-04-30 06:55:31',
+      score: 1,
+      exam_id: 1,
+    }];
+    const columns = [{
+      title: 'id',
+      dataIndex: 'id',
+    }, {
+      title: '试题名称',
+      dataIndex: 'name',
+    }, {
+      title: '试题类型',
+      dataIndex: 'type',
+      render: (val) => (<p>{TYPE[val]}</p>),
+    }, {
+      title: '创建时间',
+      dataIndex: 'create_time',
+    }, {
+      title: '分数',
+      dataIndex: 'score',
+    }, {
+      title: '考试id',
+      dataIndex: 'exam_id',
+    }, {
+      title: '操作',
+      render: () => (
+        <div className={styles.action}>
+          <a href="">删除</a>
+          <a href="">编辑</a>
+        </div>),
+    }];
 
     const parentMethods = {
       handleModalVisible: this.handleModalVisible,
@@ -161,6 +149,6 @@ export default class Question extends Component {
         </Card>
         <CreateForm {...parentMethods} modalVisible={modalVisible} />
       </div>
-    );
+    )
   }
 }
