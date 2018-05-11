@@ -51,9 +51,9 @@ export default class Exam extends PureComponent {
     });
   };
 
-  renderForm() {
-    return <div>查询条件表单</div>;
-  }
+  renderForm = () => (
+    <div>查询条件表单</div>
+  );
 
   render() {
     const { modalVisible } = this.state;
