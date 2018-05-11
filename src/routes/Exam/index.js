@@ -51,9 +51,7 @@ export default class Exam extends PureComponent {
     });
   };
 
-  renderForm = () => (
-    <div>查询条件表单</div>
-  );
+  renderForm = () => <div>查询条件表单</div>;
 
   render() {
     const { modalVisible } = this.state;
@@ -167,7 +165,7 @@ export default class Exam extends PureComponent {
     };
     return (
       <div>
-        <Card border={false}>
+        <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
             <div className={styles.tableListOperator}>

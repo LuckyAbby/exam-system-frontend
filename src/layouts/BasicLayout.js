@@ -8,7 +8,7 @@ import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
 import pathToRegexp from 'path-to-regexp';
 import { enquireScreen, unenquireScreen } from 'enquire-js';
-import PageHeaderLayout from './PageHeaderLayout'
+import PageHeaderLayout from './PageHeaderLayout';
 import GlobalHeader from '../components/GlobalHeader';
 import GlobalFooter from '../components/GlobalFooter';
 import SiderMenu from '../components/SiderMenu';
@@ -192,7 +192,7 @@ class BasicLayout extends React.PureComponent {
     } = this.props;
     const bashRedirect = this.getBashRedirect();
     const { params } = this.props.match;
-    const menuData = getMenuData(params);    
+    const menuData = getMenuData(params);
     const layout = (
       <Layout>
         <SiderMenu
@@ -223,7 +223,7 @@ class BasicLayout extends React.PureComponent {
             />
           </Header>
           <Content style={{ margin: '24px 24px 0', height: '100%' }}>
-            <PageHeaderLayout />
+            {/* <PageHeaderLayout /> */}
             <Switch>
               {redirectData.map(item => (
                 <Redirect key={item.from} exact from={item.from} to={item.to} />
@@ -239,11 +239,8 @@ class BasicLayout extends React.PureComponent {
                 />
               ))}
               <Redirect exact from="/" to={bashRedirect} />
-              {
-                params && params.id && (
-                  <Redirect exact from="/exam/:id" to={`/exam/${params.id}/config`} />              
-                )
-              }
+              {params &&
+                params.id && <Redirect exact from="/exam/:id" to={`/exam/${params.id}/config`} />}
               <Route render={NotFound} />
             </Switch>
           </Content>
