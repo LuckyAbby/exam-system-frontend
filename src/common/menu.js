@@ -59,6 +59,10 @@ const menuData = [
         name: '试卷列表',
         path: 'list',
       },
+      {
+        name: '添加试卷',
+        path: 'add',
+      },
     ],
   },
   {
@@ -70,6 +74,10 @@ const menuData = [
       {
         name: '考生列表',
         path: 'list',
+      },
+      {
+        name: '添加考生',
+        path: 'add',
       },
     ],
   },
