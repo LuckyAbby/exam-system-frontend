@@ -22,13 +22,13 @@ const menuData = [
     ],
   },
   {
-    name: '考试管理',
+    name: '考试配置管理',
     icon: 'dashboard',
     path: 'exam',
     authority: 'admin',
     children: [
       {
-        name: '考试信息',
+        name: '考试配置信息',
         path: ':id/config',
       },
     ],
