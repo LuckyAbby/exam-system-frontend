@@ -9,6 +9,15 @@ class Add extends Component {
   constructor(props) {
     super(props);
   }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, value) => {
+      if (!err) {
+        console.log('value', value);
+      }
+    })
+  }
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -82,6 +91,18 @@ class Add extends Component {
             }],
           })(
             <Input type="number" />
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label="阅卷人帐号"
+        >
+          {getFieldDecorator('user_id', {
+            rules: [{
+              required: true, message:'请指定阅卷人帐号',
+            }],
+          })(
+            <Input type="text" />
           )}
         </FormItem>
         <FormItem {...tailFormItemLayout}>
