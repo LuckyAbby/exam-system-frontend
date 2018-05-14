@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Card, Button, Form, Modal, Input, Table } from 'antd';
 import { Link } from 'dva/router';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import request from '../../utils/request';
 import styles from './index.less';
 

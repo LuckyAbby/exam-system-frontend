@@ -8,6 +8,7 @@ const FormItem = Form.Item;
 class Add extends Component {
   constructor(props) {
     super(props);
+    this.state = {};
   }
 
   handleSubmit = (e) => {
