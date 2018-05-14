@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Form, Input, Button, DatePicker, Card } from 'antd';
+import { Form, Input, Button, DatePicker } from 'antd';
 import styles from './index.less';
 
 const FormItem = Form.Item;
@@ -10,6 +10,7 @@ class Config extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, value) => {
       if (!err) {
+        // eslint-disable-next-line
         console.log('value:', value);
       }
     })
@@ -41,59 +42,59 @@ class Config extends Component {
 
     return (
       <div className={styles.wrapper}>
-      <Form onSubmit={this.handleSubmit}>
-        <FormItem
-          {...formItemLayout}
-          label="考试名称"
-        >
-          {getFieldDecorator('name', {
+        <Form onSubmit={this.handleSubmit}>
+          <FormItem
+            {...formItemLayout}
+            label="考试名称"
+          >
+            {getFieldDecorator('name', {
             rules: [{
               required: true, message: '请输入考试名称',
             }],
           })(
             <Input type="text" />
           )}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="考试时长"
-        >
-          {getFieldDecorator('time', {
+          </FormItem>
+          <FormItem
+            {...formItemLayout}
+            label="考试时长"
+          >
+            {getFieldDecorator('time', {
             rules: [{
               required: true, message: '请输入考试时长',
             }],
           })(
             <Input type="number" />
           )}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="考试开始时间"
-        >
-          {getFieldDecorator('start_time', {
+          </FormItem>
+          <FormItem
+            {...formItemLayout}
+            label="考试开始时间"
+          >
+            {getFieldDecorator('start_time', {
             rules: [{
               required: true, message: '请输入考试的开始时间',
             }],
           })(
             <DatePicker />
           )}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="考试结束时间"
-        >
-          {getFieldDecorator('end_time', {
+          </FormItem>
+          <FormItem
+            {...formItemLayout}
+            label="考试结束时间"
+          >
+            {getFieldDecorator('end_time', {
             rules: [{
               required: true, message: '请输入考试结束时间',
             }],
           })(
             <DatePicker />
           )}
-        </FormItem>
-        <FormItem {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">提交</Button>
-        </FormItem>
-      </Form>
+          </FormItem>
+          <FormItem {...tailFormItemLayout}>
+            <Button type="primary" htmlType="submit">提交</Button>
+          </FormItem>
+        </Form>
       </div>
     )
   }

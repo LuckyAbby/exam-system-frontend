@@ -8,7 +8,6 @@ import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
 import pathToRegexp from 'path-to-regexp';
 import { enquireScreen, unenquireScreen } from 'enquire-js';
-import PageHeaderLayout from './PageHeaderLayout';
 import GlobalHeader from '../components/GlobalHeader';
 import GlobalFooter from '../components/GlobalFooter';
 import SiderMenu from '../components/SiderMenu';
@@ -274,7 +273,7 @@ class BasicLayout extends React.PureComponent {
     return (
       <DocumentTitle title={this.getPageTitle()}>
         <ContainerQuery query={query}>
-          {params => <div className={classNames(params)}>{layout}</div>}
+          {paramsClass => <div className={classNames(paramsClass)}>{layout}</div>}
         </ContainerQuery>
       </DocumentTitle>
     );

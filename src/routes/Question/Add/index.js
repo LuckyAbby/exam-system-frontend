@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Radio, Input, Button, Checkbox } from 'antd';
+import { Form, Radio, Input, Button } from 'antd';
 import styles from './index.less';
 
 const FormItem = Form.Item;
