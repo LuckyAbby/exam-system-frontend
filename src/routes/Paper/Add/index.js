@@ -6,9 +6,9 @@ const FormItem = Form.Item;
 // const RadioGroup = Radio.Group;
 
 class Add extends Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+    // super(props);
+  // }
 
   handleSubmit = (e) => {
     e.preventDefault();
