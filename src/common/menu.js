@@ -63,6 +63,10 @@ const menuData = [
         name: '添加试卷',
         path: 'add',
       },
+      {
+        name: '编辑试卷',
+        path: 'edit/:paper_id',
+      },
     ],
   },
   {

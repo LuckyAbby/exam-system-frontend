@@ -58,8 +58,6 @@ class Add extends Component {
     
     return (
       <div className={styles.wrapper}>
-       
-      
         <Form onSubmit={this.handleSubmit}>
           <FormItem
             {...formItemLayout}

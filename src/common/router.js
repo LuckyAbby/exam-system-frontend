@@ -106,6 +106,9 @@ export const getRouterData = app => {
     '/exam/:id/paper/list': {
       component: dynamicWrapper(app, [], () => import('../routes/Paper')),
     },
+    '/exam/:id/paper/edit/:paper_id': {
+      component: dynamicWrapper(app, [], () => import('../routes/Paper/Edit')),
+    },
     '/exam/:id/paper/add': {
       component: dynamicWrapper(app, [], () => import('../routes/Paper/Add')),
     },

@@ -59,10 +59,10 @@ export default class Paper extends Component {
       dataIndex: 'create_time',
     },{
       title: '操作',
-      render: () => (
+      render: (record) => (
         <div className={styles.action}>
           <a href="">删除</a>
-          <a href="">编辑</a>
+          <Link to={`/exam/${record.exam_id}/paper/edit/${record.id}`}>编辑</Link>
         </div>),
     }];
 
