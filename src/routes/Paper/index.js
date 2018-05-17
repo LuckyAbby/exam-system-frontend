@@ -19,22 +19,25 @@ export default class Paper extends Component {
       subjective_score: 70,
       objective_score: 80,
       exam_id: 1,
+      key: 1,
     }, {
-      id: 1,
+      id: 2,
       name: '试题2',
       total_score: 2,
       create_time: '2018-04-30 06:55:31',
       subjective_score: 80,
       objective_score: 80,
       exam_id: 1,
+      key: 2,      
     }, {
-      id: 1,
+      id: 3,
       name: '试题3',
       total_score: 1,
       create_time: '2018-04-30 06:55:31',
       subjective_score: 90,
       objective_score: 80,
       exam_id: 1,
+      key: 3,      
     }];
     const columns = [{
       title: 'id',

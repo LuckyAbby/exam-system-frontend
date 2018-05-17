@@ -7,13 +7,14 @@ import styles from './index.less';
 
 const FormItem = Form.Item;
 
+
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = dispatch => ({
   dispatch,
 });
 
-class Detail extends Component {
+class Edit extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -152,4 +153,4 @@ class Detail extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(Detail));
+export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(Edit));
