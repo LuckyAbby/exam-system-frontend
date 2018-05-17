@@ -1,44 +1,12 @@
 import React, { PureComponent } from 'react';
-import { Card, Button, Form, Modal, Input, Table } from 'antd';
+import { Card, Button, Form, Modal, Input, Table, DatePicker } from 'antd';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
-import request from '../../utils/request';
 import styles from './index.less';
 
 const FormItem = Form.Item;
 const state = ['未上线', '已上线', '已下线'];
 
-const CreateForm = Form.create()(props => {
-  const { modalVisible, form, handleModalVisible } = props;
-  const okHandle = () => {
-    form.validateFields((err, fieldsValue) => {
-      if (err) return;
-      form.resetFields();
-      request('/api/exam', {
-        method: 'POST',
-        body: {
-          name: fieldsValue.name,
-        },
-      });
-    });
-  };
-  return (
-    <Modal
-      title="新建考试"
-      visible={modalVisible}
-      onOk={okHandle}
-      onCancel={() => handleModalVisible()}
-    >
-      <form action="/api/exam" method="post">
-        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="考试名称">
-          {form.getFieldDecorator('name', {
-            rules: [{ required: true, message: '请输入考试名称' }],
-          })(<Input placeholder="请输入考试名称" />)}
-        </FormItem>
-      </form>
-    </Modal>
-  );
-});
 
 const mapStateToProps = ({
   exam,
@@ -53,6 +21,7 @@ const mapDispatchToProps = dispatch => ({
   dispatcher: {
     exam: {
       fetch: payload => dispatch({ type: 'exam/fetch', payload }),
+      // create: payload => dispatch({ type: 'exam/create', payload }),
     },
   },
 });
@@ -72,6 +41,14 @@ class Exam extends PureComponent {
       modalVisible: !!flag,
     });
   };
+
+  okHandle = () => {
+    this.props.form.validateFields((err, values) => {
+      if (err) return;
+      // form.resetFields();
+      console.log(values);
+    });
+  }
 
   renderForm = () => <div>查询条件表单</div>;
 
@@ -151,10 +128,17 @@ class Exam extends PureComponent {
       },
     ];
 
-    const parentMethods = {
-      handleAdd: this.handleAdd,
-      handleModalVisible: this.handleModalVisible,
+ 
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 6 },
+      },
+      wrapperCol: {
+        xs: { span: 15 },
+      },
     };
+
+    const { getFieldDecorator } = this.props.form;
     return (
       <div>
         <Card bordered={false}>
@@ -174,11 +158,68 @@ class Exam extends PureComponent {
             />
           </div>
         </Card>
-        <CreateForm {...parentMethods} modalVisible={modalVisible} />
+        <Modal 
+          visible={modalVisible}
+          onCancel={() => this.handleModalVisible()}
+          onOk={this.okHandle}
+          maskClosable={false}
+          destroyOnClose
+        >
+          <Form onSubmit={this.handleSubmit}>
+            <FormItem
+              {...formItemLayout}
+              label="考试名称"
+            >
+              {getFieldDecorator('name', {
+            rules: [{
+              required: true, message: '请输入考试名称',
+            }],
+          })(
+            <Input type="text" />
+          )}
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="考试时长"
+            >
+              {getFieldDecorator('time', {
+            rules: [{
+              required: true, message: '请输入考试时长',
+            }],
+          })(
+            <Input type="number" />
+          )}
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="考试开始时间"
+            >
+              {getFieldDecorator('start_time', {
+            rules: [{
+              required: true, message: '请输入考试的开始时间',
+            }],
+          })(
+            <DatePicker />
+          )}
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="考试结束时间"
+            >
+              {getFieldDecorator('end_time', {
+            rules: [{
+              required: true, message: '请输入考试结束时间',
+            }],
+          })(
+            <DatePicker />
+          )}
+            </FormItem>
+          </Form>
+        </Modal>
       </div>
     );
   }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Exam);
+export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(Exam));
