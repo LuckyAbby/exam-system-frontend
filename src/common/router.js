@@ -84,10 +84,10 @@ export const getRouterData = app => {
 
     // 考试列表
     '/': {
-      component: dynamicWrapper(app, [], () => import('../layouts/ExamLayout')),
+      component: dynamicWrapper(app, ['exam'], () => import('../layouts/ExamLayout')),
     },
     '/exam': {
-      component: dynamicWrapper(app, [], () => import('../routes/Exam')),
+      component: dynamicWrapper(app, ['exam'], () => import('../routes/Exam')),
     },
     '/exam/:id': {
       component: dynamicWrapper(app, ['user'], () => import('../layouts/BasicLayout')),

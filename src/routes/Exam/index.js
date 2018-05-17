@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Card, Button, Form, Modal, Input, Table } from 'antd';
+import { connect } from 'dva';
 import { Link } from 'dva/router';
 import request from '../../utils/request';
 import styles from './index.less';
@@ -39,10 +40,32 @@ const CreateForm = Form.create()(props => {
   );
 });
 
-export default class Exam extends PureComponent {
+const mapStateToProps = ({
+  exam,
+  loading,
+}) => ({
+  exam,
+  loading,
+});
+
+const mapDispatchToProps = dispatch => ({
+  dispatch,
+  dispatcher: {
+    exam: {
+      fetch: payload => dispatch({ type: 'exam/fetch', payload }),
+    },
+  },
+});
+
+class Exam extends PureComponent {
   state = {
     modalVisible: false,
   };
+
+  componentWillMount = () => {
+    this.props.dispatcher.exam.fetch();
+  }
+  
 
   handleModalVisible = flag => {
     this.setState({
@@ -54,38 +77,8 @@ export default class Exam extends PureComponent {
 
   render() {
     const { modalVisible } = this.state;
-    const data = [
-      {
-        key: '1',
-        id: 1,
-        name: '考试1',
-        time: 100,
-        start_time: '2018-04-30 06:55:31',
-        end_time: '2018-04-30 07:55:31',
-        create_time: '2018-05-06 11:34:12',
-        state: 1,
-      },
-      {
-        key: '2',
-        id: 2,
-        name: '考试2',
-        time: 100,
-        start_time: '2018-04-30 06:55:31',
-        end_time: '2018-04-30 07:55:31',
-        create_time: '2018-05-06 11:34:12',
-        state: 2,
-      },
-      {
-        key: '3',
-        id: 3,
-        name: '考试3',
-        time: 100,
-        start_time: '2018-04-30 06:55:31',
-        end_time: '2018-04-30 07:55:31',
-        create_time: '2018-05-06 11:34:12',
-        state: 0,
-      },
-    ];
+    const { exam, loading } = this.props;
+    const { list } = exam;
     const columns = [
       {
         title: 'id',
@@ -172,7 +165,13 @@ export default class Exam extends PureComponent {
                 新建
               </Button>
             </div>
-            <Table dataSource={data} columns={columns} />
+            <Table 
+              dataSource={list} 
+              columns={columns} 
+              rowKey='id' 
+              pagination={false} 
+              loading={loading.effects['exam/fetch']}
+            />
           </div>
         </Card>
         <CreateForm {...parentMethods} modalVisible={modalVisible} />
@@ -180,3 +179,6 @@ export default class Exam extends PureComponent {
     );
   }
 }
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Exam);

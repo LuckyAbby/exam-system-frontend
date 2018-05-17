@@ -17,10 +17,11 @@ export default {
       });
     },
     *fetchCurrent(_, { call, put }) {
-      const response = yield call(queryCurrent);
+      const { content } = yield call(queryCurrent);
+      const { user } = content;
       yield put({
         type: 'saveCurrentUser',
-        payload: response,
+        payload: user,
       });
     },
   },
@@ -36,15 +37,6 @@ export default {
       return {
         ...state,
         currentUser: action.payload,
-      };
-    },
-    changeNotifyCount(state, action) {
-      return {
-        ...state,
-        currentUser: {
-          ...state.currentUser,
-          notifyCount: action.payload,
-        },
       };
     },
   },
