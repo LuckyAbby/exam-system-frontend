@@ -5,6 +5,13 @@ export async function queryExams() {
   return request('/api/exams');
 }
 
+export async function createExam(params) {
+  return request('/api/exam', {
+    method: 'POST',
+    body: params,
+  })
+}
+
 export async function queryProjectNotice() {
   return request('/api/project/notice');
 }

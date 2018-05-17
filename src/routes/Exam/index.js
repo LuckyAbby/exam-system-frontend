@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Card, Button, Form, Modal, Input, Table, DatePicker } from 'antd';
 import { connect } from 'dva';
+import _ from 'lodash';
 import { Link } from 'dva/router';
 import styles from './index.less';
 
@@ -21,7 +22,7 @@ const mapDispatchToProps = dispatch => ({
   dispatcher: {
     exam: {
       fetch: payload => dispatch({ type: 'exam/fetch', payload }),
-      // create: payload => dispatch({ type: 'exam/create', payload }),
+      create: payload => dispatch({ type: 'exam/create', payload }),
     },
   },
 });
@@ -47,10 +48,43 @@ class Exam extends PureComponent {
       if (err) return;
       // form.resetFields();
       console.log(values);
+      const sendData = _.pick(values, [
+        'name',
+        'time',
+      ]);
+      sendData.state = 0;
+      sendData.start_time = '2018-04-30 06:55:31';
+      sendData.end_time = '2018-04-30 06:55:31';
+      console.log('sendData', sendData);
+      // this.props.dispatcher.exam.create(sendData);
     });
   }
 
-  renderForm = () => <div>查询条件表单</div>;
+  search = () => {
+    const value = this.props.form.getFieldsValue()
+    console.log('value', value);
+  }
+
+  // renderForm = () => <div>查询条件表单</div>;
+
+  renderForm = () => {
+    return (
+      <Form layout="inline">
+        <FormItem
+          label="考试名称"
+        >
+          {this.props.form.getFieldDecorator('searchName', {})
+        (<Input type="text" />)}
+        </FormItem>
+        <FormItem>
+          <Button type="primary" htmlType="submit" onClick={() => this.search()}>查询</Button>
+        </FormItem>
+        <FormItem>
+          <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>新建</Button>
+        </FormItem>
+      </Form>
+    );
+  }
 
   render() {
     const { modalVisible } = this.state;
@@ -61,7 +95,7 @@ class Exam extends PureComponent {
         title: 'id',
         key: 'id',
         dataIndex: 'id',
-        render: val => <Link to={`/exam/${val}`}>{val}</Link>,
+        render: val => <Link to={`/exam/${val}`}>{`201800  ${val}`}</Link>,
       },
       {
         title: '考试名称',
@@ -144,11 +178,11 @@ class Exam extends PureComponent {
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
-            <div className={styles.tableListOperator}>
+            {/* <div className={styles.tableListOperator}>
               <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
                 新建
               </Button>
-            </div>
+            </div> */}
             <Table 
               dataSource={list} 
               columns={columns} 
