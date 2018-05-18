@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Button,  Table, Card } from 'antd';
+import { Button, Table, Card, Form, Input } from 'antd';
 import { Link } from 'dva/router'; 
 import styles from './index.less';
 
-
+const FormItem = Form.Item;
 const TYPE = {
   1: '选择题',
   2: '问答题',
@@ -16,9 +16,24 @@ export default class Question extends Component {
   };
 
 
-  renderForm = () => (
-    <div>查询表单条件</div>
-  );
+  renderForm = () => {
+    return (
+      <Form layout="inline">
+        <FormItem
+          label="试题名称"
+        >
+          {this.props.form.getFieldDecorator('searchName', {})
+        (<Input type="text" />)}
+        </FormItem>
+        <FormItem>
+          <Button type="primary" htmlType="submit" onClick={() => this.search()}>查询</Button>
+        </FormItem>
+        {/* <FormItem>
+          <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>新建</Button>
+        </FormItem> */}
+      </Form>
+    );
+  };
 
   render() {
     const { match } = this.props;
@@ -82,7 +97,20 @@ export default class Question extends Component {
         <h2>试题管理</h2>
         <Card bordered={false}>
           <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderForm()}</div>
+            {/* <div className={styles.tableListForm}>
+            {this.renderForm()}
+            </div> */}
+            {/* <Form layout="inline">
+              <FormItem
+                label="试题名称"
+              >
+                {this.props.form.getFieldDecorator('searchName', {})
+              (<Input type="text" />)}
+              </FormItem>
+              <FormItem>
+                <Button type="primary" htmlType="submit" onClick={() => this.search()}>查询</Button>
+              </FormItem>
+            </Form> */}
             <div className={styles.tableListOperator}>
               <Button icon="plus" type="primary">
                 <Link to={`/exam/${id}/question/add`}>新建试题</Link>
