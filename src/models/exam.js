@@ -1,4 +1,5 @@
-import { query as queryExams, createExam } from '../services/exam';
+import _ from 'lodash';
+import { query as queryExams, create } from '../services/exam';
 
 export default {
   namespace: 'exam',
@@ -8,19 +9,17 @@ export default {
   },
 
   effects: {
-    *fetch(_, { call, put }) {
+    *fetch(action, { call, put }) {
       const { content } = yield call(queryExams);
       yield put({
         type: 'save',
         payload: content.exams,
       });
     },
-    *create({ payload }, { call, put}) {
-      const { content } = yield call(createExam, payload);
-      yield put({
-        type: 'save',
-        payload: content.exams,
-      });
+
+    *create({ payload, callback }, { call }) {
+      yield call(create, payload);
+      if (_.isFunction(callback)) callback();
     },
   },
 

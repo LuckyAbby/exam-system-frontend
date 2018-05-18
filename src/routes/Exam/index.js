@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
-import { Card, Button, Form, Modal, Input, Table, DatePicker } from 'antd';
+import { Card, Button, Form, Modal, Input, Table, DatePicker, message } from 'antd';
 import { connect } from 'dva';
-import _ from 'lodash';
 import { Link } from 'dva/router';
 import styles from './index.less';
 
 const FormItem = Form.Item;
+const { RangePicker } = DatePicker;
 const state = ['未上线', '已上线', '已下线'];
 
 
@@ -22,7 +22,7 @@ const mapDispatchToProps = dispatch => ({
   dispatcher: {
     exam: {
       fetch: payload => dispatch({ type: 'exam/fetch', payload }),
-      create: payload => dispatch({ type: 'exam/create', payload }),
+      create: (payload, callback) => dispatch({ type: 'exam/create', payload, callback }),
     },
   },
 });
@@ -46,17 +46,19 @@ class Exam extends PureComponent {
   okHandle = () => {
     this.props.form.validateFields((err, values) => {
       if (err) return;
-      // form.resetFields();
-      console.log(values);
-      const sendData = _.pick(values, [
-        'name',
-        'time',
-      ]);
-      sendData.state = 0;
-      sendData.start_time = '2018-04-30 06:55:31';
-      sendData.end_time = '2018-04-30 06:55:31';
-      console.log('sendData', sendData);
-      // this.props.dispatcher.exam.create(sendData);
+      const data = {
+        name: values.name,
+        time: values.time,
+        state: 0,
+        start_time: values.exam_time[0].toDate(),
+        end_time: values.exam_time[1].toDate(),
+      }
+      this.props.dispatcher.exam.create(data, () => {
+        message.success('创建成功');
+        this.props.form.resetFields();
+        this.handleModalVisible(false);
+        this.props.dispatcher.exam.fetch();
+      });
     });
   }
 
@@ -65,7 +67,6 @@ class Exam extends PureComponent {
     console.log('value', value);
   }
 
-  // renderForm = () => <div>查询条件表单</div>;
 
   renderForm = () => {
     return (
@@ -198,6 +199,7 @@ class Exam extends PureComponent {
           onOk={this.okHandle}
           maskClosable={false}
           destroyOnClose
+          confirmLoading={loading.effects['exam/create']}
         >
           <Form onSubmit={this.handleSubmit}>
             <FormItem
@@ -226,27 +228,19 @@ class Exam extends PureComponent {
             </FormItem>
             <FormItem
               {...formItemLayout}
-              label="考试开始时间"
+              label="考试时间"
             >
-              {getFieldDecorator('start_time', {
-            rules: [{
-              required: true, message: '请输入考试的开始时间',
-            }],
-          })(
-            <DatePicker />
-          )}
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="考试结束时间"
-            >
-              {getFieldDecorator('end_time', {
-            rules: [{
-              required: true, message: '请输入考试结束时间',
-            }],
-          })(
-            <DatePicker />
-          )}
+              {getFieldDecorator('exam_time', {
+                rules: [{
+                  required: true, message: '请选择考试时间',
+                }],
+              })(
+                <RangePicker
+                  format="YYYY-MM-DD HH:mm"
+                  showTime={{ format: 'HH:mm' }}
+                  placeholder={['开始时间', '结束时间']}
+                />
+              )}
             </FormItem>
           </Form>
         </Modal>
