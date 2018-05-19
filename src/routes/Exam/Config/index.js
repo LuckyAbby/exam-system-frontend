@@ -60,7 +60,7 @@ class Config extends Component {
   render() {
     const { exam } = this.props;
     const config = exam.config || {};
-    // console.log('config', config);
+    console.log('config', config);
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -122,7 +122,7 @@ class Config extends Component {
             rules: [{
               required: true, message: '请输入考试时间',
             }],
-            // initialValue: config.start_time,
+            initialValue: [moment(config.start_time), moment(config.end_time)],
           })(
             <RangePicker
               format="YYYY-MM-DD HH:mm"
