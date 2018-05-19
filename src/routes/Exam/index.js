@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Card, Button, Form, Modal, Input, Table, DatePicker, message } from 'antd';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
+import moment from 'moment';
 import styles from './index.less';
 
 const FormItem = Form.Item;
@@ -119,11 +120,13 @@ class Exam extends PureComponent {
         title: '考试开始时间',
         key: 'start_time',
         dataIndex: 'start_time',
+        render:  (val) => (moment().format('YYYY-MM-DD h:mm:ss', val)),
       },
       {
         title: '考试结束时间',
         key: 'end_time',
         dataIndex: 'end_time',
+        render:  (val) => (moment().format('YYYY-MM-DD h:mm:ss', val)),
       },
       {
         title: '考试状态',

@@ -41,13 +41,13 @@ class Config extends Component {
     this.props.form.validateFields((err, value) => {
       if (!err) {
         // eslint-disable-next-line
-        console.log('value:', value);
+        // console.log('value:', value);
         const data = {
           id,
           name: value.name,
           time: value.time,
-          // start_time: value.exam_time[0].toDate(),
-          // end_time: value.exam_time[1].toDate(),
+          start_time: value.exam_time[0].toDate(),
+          end_time: value.exam_time[1].toDate(),
         };
         this.props.dispatcher.exam.update(data, () => {
           message.success('修改成功');
@@ -60,7 +60,7 @@ class Config extends Component {
   render() {
     const { exam } = this.props;
     const config = exam.config || {};
-    console.log('config', config);
+    // console.log('config', config);
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {

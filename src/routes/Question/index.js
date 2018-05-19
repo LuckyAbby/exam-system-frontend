@@ -7,8 +7,8 @@ import styles from './index.less';
 const FormItem = Form.Item;
 const TYPE = {
   1: '选择题',
-  2: '问答题',
-  3: '判断题',
+  2: '判断题',
+  3: '问答题',
 };
 
 const mapStateToProps = ({
