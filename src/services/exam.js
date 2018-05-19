@@ -16,3 +16,7 @@ export async function deleteExam(params) {
     method: 'DELETE',
   });
 }
+
+export async function getOne(params) {
+  return request(`/api/exam/${params.id}`);
+}

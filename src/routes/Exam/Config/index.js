@@ -1,11 +1,38 @@
 import React, { Component } from 'react';
-
 import { Form, Input, Button, DatePicker } from 'antd';
+import { connect } from 'dva';
+import moment from 'moment';
 import styles from './index.less';
 
 const FormItem = Form.Item;
+const { RangePicker } = DatePicker;
+
+const mapStateToProps = ({
+  exam,
+}) => ({
+  exam,
+});
+
+const mapDispatchToProps = dispatch => ({
+  dispatch,
+  dispathcher: {
+    exam: {
+      fetch: payload => dispatch({ type: 'exam/getOne', payload }),
+      update: (payload, callback) => dispatch({ type: 'exam/update', payload, callback }),
+    },
+  },
+})
 
 class Config extends Component {
+
+  componentWillMount = () => {
+    const { match } = this.props;
+    const { params } = match;
+    const { id } = params;
+    console.log('id', id);
+    this.props.dispathcher.exam.fetch({ id });
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, value) => {
@@ -16,6 +43,9 @@ class Config extends Component {
     })
   }
   render() {
+    const { exam } = this.props;
+    const config = exam.config || {};
+    console.log('config', config);
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -51,6 +81,7 @@ class Config extends Component {
             rules: [{
               required: true, message: '请输入考试名称',
             }],
+            initialValue: config.name,
           })(
             <Input type="text" />
           )}
@@ -63,23 +94,30 @@ class Config extends Component {
             rules: [{
               required: true, message: '请输入考试时长',
             }],
+            initialValue: config.time,
           })(
             <Input type="number" />
           )}
           </FormItem>
           <FormItem
             {...formItemLayout}
-            label="考试开始时间"
+            label="考试时间"
           >
-            {getFieldDecorator('start_time', {
+            {getFieldDecorator('exam_time', {
             rules: [{
-              required: true, message: '请输入考试的开始时间',
+              required: true, message: '请输入考试时间',
             }],
+            // initialValue: config.start_time,
           })(
-            <DatePicker />
+            <RangePicker
+              format="YYYY-MM-DD HH:mm"
+              showTime={{ format: 'HH:mm' }}
+              placeholder={['开始时间', '结束时间']}
+              // defaultValue={[moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat)]}
+            />
           )}
           </FormItem>
-          <FormItem
+          {/* <FormItem
             {...formItemLayout}
             label="考试结束时间"
           >
@@ -87,10 +125,11 @@ class Config extends Component {
             rules: [{
               required: true, message: '请输入考试结束时间',
             }],
+            // initialValue: config.end_time,
           })(
             <DatePicker />
           )}
-          </FormItem>
+          </FormItem> */}
           <FormItem {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit">提交</Button>
           </FormItem>
@@ -100,4 +139,5 @@ class Config extends Component {
   }
 }
 
-export default Form.create()(Config);
+// export default Form.create()(Config);
+export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(Config));

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { query as queryExams, create, deleteExam } from '../services/exam';
+import { query as queryExams, create, deleteExam, getOne } from '../services/exam';
 
 export default {
   namespace: 'exam',
@@ -26,6 +26,14 @@ export default {
       yield call(deleteExam, payload);
       if (_.isFunction(callback)) callback();
     },
+
+    *getOne(action, { call, put }) {
+      const { content } = yield call(getOne, action.payload);
+      yield put({
+        type: 'saveOne',
+        payload: content.exam,
+      })
+    },
   },
 
   reducers: {
@@ -34,6 +42,12 @@ export default {
         ...state,
         list: action.payload,
       };
+    },
+    saveOne(state, action) {
+      return {
+        ...state,
+        config: action.payload,
+      }
     },
   },
 };
