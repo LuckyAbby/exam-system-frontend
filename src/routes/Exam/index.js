@@ -23,6 +23,7 @@ const mapDispatchToProps = dispatch => ({
     exam: {
       fetch: payload => dispatch({ type: 'exam/fetch', payload }),
       create: (payload, callback) => dispatch({ type: 'exam/create', payload, callback }),
+      deleteExam: (payload, callback) => dispatch({ type: 'exam/deleteExam', payload, callback }),
     },
   },
 });
@@ -67,6 +68,12 @@ class Exam extends PureComponent {
     console.log('value', value);
   }
 
+  delete = (id) => {
+    this.props.dispatcher.exam.deleteExam({ id }, () => {
+      message.success('删除成功');
+      this.props.dispatcher.exam.fetch();
+    })
+  }
 
   renderForm = () => {
     return (
@@ -96,7 +103,7 @@ class Exam extends PureComponent {
         title: 'id',
         key: 'id',
         dataIndex: 'id',
-        render: val => <Link to={`/exam/${val}`}>{`201800  ${val}`}</Link>,
+        render: val => <Link to={`/exam/${val}`}>{`201800${val}`}</Link>,
       },
       {
         title: '考试名称',
@@ -137,24 +144,24 @@ class Exam extends PureComponent {
           if (text.state === 0) {
             return (
               <div className={styles.action}>
-                <a href="">删除</a>
-                <a href="">编辑</a>
+                <a onClick={() => this.delete(text.id)}>删除</a>
+                <Link to={`/exam/${text.id}`}>编辑</Link>
                 <a href="">上线</a>
               </div>
             );
           } else if (text.state === 1) {
             return (
               <div className={styles.action}>
-                <a href="">删除</a>
-                <a href="">编辑</a>
+                <a onClick={() => this.delete(text.id)}>删除</a>
+                <Link to={`/exam/${text.id}`}>编辑</Link>
                 <a href="">下线</a>
               </div>
             );
           } else {
             return (
               <div className={styles.action}>
-                <a href="">删除</a>
-                <a href="">编辑</a>
+                <a onClick={() =>this.delete(text.id)}>删除</a>
+                <Link to={`/exam/${text.id}`}>编辑</Link>
                 <a href="">重新上线</a>
               </div>
             );

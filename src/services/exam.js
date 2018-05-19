@@ -10,3 +10,9 @@ export async function create(params) {
     body: params,
   });
 }
+
+export async function deleteExam(params) {
+  return request(`/api/exam/${params.id}`, {
+    method: 'DELETE',
+  });
+}
