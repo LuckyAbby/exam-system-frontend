@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Table, Card, Form, Input } from 'antd';
-import { Link } from 'dva/router'; 
+import { Link } from 'dva/router';
+import { connect } from 'dva';
 import styles from './index.less';
 
 const FormItem = Form.Item;
@@ -10,11 +11,36 @@ const TYPE = {
   3: '判断题',
 };
 
+const mapStateToProps = ({
+  question,
+  loading,
+}) => ({
+  question,
+  loading,
+});
 
-export default class Question extends Component {
+const mapDispatchToProps = dispatch => ({
+  dispatch,
+  dispatcher: {
+    question: {
+      fetch: payload => dispatch({ type: 'question/fetch', payload}),
+      create: (payload, callback) => dispatch({ type: 'question/create', payload, callback }),
+      deleteQuestion: ( payload, callback) => dispatch({ type: 'question/deleteQuestion', payload, callback}),
+    },
+  },
+})
+
+class Question extends Component {
   state = {
   };
 
+  componentWillMount = () => {
+    const { match } = this.props;
+    const { params } = match;
+    const { id } = params;
+    console.log('id', id);
+    this.props.dispatcher.question.fetch({ exam_id: id });
+  }
 
   renderForm = () => {
     return (
@@ -39,31 +65,8 @@ export default class Question extends Component {
     const { match } = this.props;
     const { params } = match;
     const { id } = params;
-    const data = [{
-      id: 1,
-      name: '试题1',
-      type: 1,
-      create_time: '2018-04-30 06:55:31',
-      score: 1,
-      exam_id: 1,
-      key: 1,
-    }, {
-      id: 1,
-      name: '试题2',
-      type: 2,
-      create_time: '2018-04-30 06:55:31',
-      score: 2,
-      exam_id: 1,
-      key: 2,
-    }, {
-      id: 1,
-      name: '试题3',
-      type: 1,
-      create_time: '2018-04-30 06:55:31',
-      score: 1,
-      exam_id: 1,
-      key: 3,      
-    }];
+    const { question, loading } = this.props;
+    // const { list } = question;
     const columns = [{
       title: 'id',
       dataIndex: 'id',
@@ -116,10 +119,18 @@ export default class Question extends Component {
                 <Link to={`/exam/${id}/question/add`}>新建试题</Link>
               </Button>
             </div>
-            <Table dataSource={data} columns={columns} />
+            <Table
+              // dataSource={list} 
+              columns={columns}
+              rowKey='id'
+              pagination={false}
+              loading={loading.effects['question/fetch']}
+            />
           </div>
         </Card>
       </div>
     )
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Question);
