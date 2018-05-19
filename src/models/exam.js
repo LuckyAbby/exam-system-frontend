@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { query as queryExams, create, deleteExam, getOne } from '../services/exam';
+import { query as queryExams, create, deleteExam, getOne, update } from '../services/exam';
 
 export default {
   namespace: 'exam',
@@ -33,6 +33,11 @@ export default {
         type: 'saveOne',
         payload: content.exam,
       })
+    },
+
+    *update({ payload, callback}, { call }) {
+      yield call(update, payload);
+      if(_.isFunction(callback)) callback();
     },
   },
 

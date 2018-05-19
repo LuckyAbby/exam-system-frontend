@@ -20,3 +20,10 @@ export async function deleteExam(params) {
 export async function getOne(params) {
   return request(`/api/exam/${params.id}`);
 }
+
+export async function update(params) {
+  return request('/api/exam', {
+    method: 'PUT',
+    body: params,
+  });
+}

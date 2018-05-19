@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, DatePicker } from 'antd';
+import { Form, Input, Button, DatePicker, message } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import styles from './index.less';
@@ -15,10 +15,11 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = dispatch => ({
   dispatch,
-  dispathcher: {
+  dispatcher: {
     exam: {
       fetch: payload => dispatch({ type: 'exam/getOne', payload }),
       update: (payload, callback) => dispatch({ type: 'exam/update', payload, callback }),
+      fetchAll: payload => dispatch({ type: 'exam/fetch', payload}),
     },
   },
 })
@@ -28,24 +29,38 @@ class Config extends Component {
   componentWillMount = () => {
     const { match } = this.props;
     const { params } = match;
-    const { id } = params;
-    console.log('id', id);
-    this.props.dispathcher.exam.fetch({ id });
+    const { id } = params;  
+    this.props.dispatcher.exam.fetch({ id });
   }
 
   handleSubmit = (e) => {
+    const { match } = this.props;
+    const { params } = match;
+    const { id } = params;  
     e.preventDefault();
     this.props.form.validateFields((err, value) => {
       if (!err) {
         // eslint-disable-next-line
         console.log('value:', value);
+        const data = {
+          id,
+          name: value.name,
+          time: value.time,
+          // start_time: value.exam_time[0].toDate(),
+          // end_time: value.exam_time[1].toDate(),
+        };
+        this.props.dispatcher.exam.update(data, () => {
+          message.success('修改成功');
+          this.props.dispatcher.exam.fetch({ id });
+          this.props.dispatcher.exam.fetchAll();
+        });
       }
     })
   }
   render() {
     const { exam } = this.props;
     const config = exam.config || {};
-    console.log('config', config);
+    // console.log('config', config);
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
