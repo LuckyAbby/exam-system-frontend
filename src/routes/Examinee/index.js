@@ -1,35 +1,78 @@
 import React, { Component } from 'react';
-import { Button, Table, Card } from 'antd';
+import { Button, Table, Card, Form, Input, message } from 'antd';
 import { Link } from 'dva/router';
+import { connect } from 'dva';
 
 import styles from './index.less';
 
-export default class Examinee extends Component {
-  renderForm = () => <div>查询表单条件</div>;
+const FormItem = Form.Item;
 
-  render() {
+const mapStateToProps = ({
+  examinee,
+  loading,
+}) => ({
+  examinee,
+  loading,
+})
+
+const mapDispatchToProps = dispatch => ({
+  dispatch,
+  dispatcher: {
+    examinee: {
+      fetch: payload => dispatch({ type: 'examinee/fetch', payload }),
+      deleteExaminee: (payload, callback) => dispatch({ type: 'examinee/deleteExaminee', payload, callback }),
+    },
+  },
+})
+
+class Examinee extends Component {
+
+  componentWillMount = () => {
     const { match } = this.props;
     const { params } = match;
     const { id } = params;
-    const data = [{
-      id: '1332423',
-      name: 'abby',
-      sex: '女',
-      email: '123@qq.com',
-      tel: 122321,
-    }, {
-      id: '234234',
-      name: 'abby1',
-      sex: '女',
-      email: '121113@qq.com',
-      tel: 12232111,
-    }, {
-      id: '1332111423',
-      name: 'abby2',
-      sex: '女',
-      email: '12223@qq.com',
-      tel: 122321,
-    }];
+    console.log('id', id);
+    this.props.dispatcher.examinee.fetch({ exam_id: id});
+  }
+
+  delete = (id) => {
+    const { match } = this.props;
+    const { params } = match;
+    // eslint-disable-next-line
+    const exam_id = params.id;
+    this.props.dispatcher.examinee.deleteExaminee({ id }, () => {
+      message.success('删除成功');
+      this.props.dispatcher.examinee.fetch({ exam_id });
+    })
+  }
+
+  renderForm = (id) => {
+    return (
+      <Form layout="inline">
+        <FormItem
+          label="考生帐号"
+        >
+          <Input />
+        </FormItem>
+        <FormItem>
+          <Button type="primary" htmlType="submit" onClick={() => this.search()}>查询</Button>
+        </FormItem>
+        <FormItem>
+          <Button icon="plus" type="primary">
+            <Link to={`/exam/${id}/examinee/add`}>新增考生信息</Link>
+          </Button>
+        </FormItem>
+      </Form>
+    );
+  };
+
+
+  render(){
+    const { match } = this.props;
+    const { params } = match;
+    const { id } = params;
+    const { examinee, loading }= this.props;
+    const { list } = examinee;
     const columns = [{
       title: 'id',
       dataIndex: 'id',
@@ -47,9 +90,9 @@ export default class Examinee extends Component {
       dataIndex: 'tel',
     }, {
       title: '操作',
-      render: () => (
+      render: (text) => (
         <div className={styles.action}>
-          <a href="">删除</a>
+          <a onClick={() => this.delete(text.id)}>删除</a>
           <a href="">编辑</a>
         </div>
       ),
@@ -60,16 +103,19 @@ export default class Examinee extends Component {
         <h2>考生管理</h2>
         <Card bordered={false}>
           <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderForm()}</div>
-            <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary">
-                <Link to={`/exam/${id}/examinee/add`}>新增考生</Link>
-              </Button>
-            </div>
-            <Table dataSource={data} columns={columns} />
+            <div className={styles.tableListOperator}>{this.renderForm(id)}</div>
+            <Table 
+              dataSource={list} 
+              columns={columns} 
+              rowKey='id' 
+              pagination={false} 
+              loading={loading.effects['examinee/fetch']}
+            />
           </div>
         </Card>
       </div> 
     )
   }
-} 
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Examinee);

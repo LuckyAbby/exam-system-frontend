@@ -24,7 +24,7 @@ const mapDispatchToProps = dispatch => ({
     question: {
       fetchQuestion: payload => dispatch({ type: 'question/fetch'}, payload),
     },
-  },
+  }, 
 });
 
 class Add extends Component {
@@ -41,7 +41,7 @@ class Add extends Component {
     const { match } = this.props;
     const { params } = match;
     const { id } = params;
-    this.props.dispatcher.question.fetchQuestion({ exam_id: id });
+    // this.props.dispatcher.question.fetchQuestion({ exam_id: id });
   }
   
   showModal = () => {
