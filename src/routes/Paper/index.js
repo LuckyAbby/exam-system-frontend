@@ -1,44 +1,77 @@
 import React, { Component } from 'react';
-import { Button, Table, Card } from 'antd';
+import { Button, Table, Card, Form, Input, message } from 'antd';
 import { Link } from 'dva/router'; 
+import { connect } from 'dva';
 
 import styles from './index.less';
 
-export default class Paper extends Component {
-  renderForm = () => <div>查询表单条件</div>;
+const FormItem = Form.Item;
+
+const mapStateToProps = ({
+  paper,
+  loading,
+}) => ({
+  paper,
+  loading,
+})
+
+const mapDispatchToProps = dispatch => ({
+  dispatch,
+  dispatcher: {
+    paper: {
+      fetch: payload => dispatch({ type: 'paper/fetch', payload }),
+      create: (payload, callback) => dispatch({ type: 'paper/create', payload, callback }),
+      deletePaper: (payload, callback) => dispatch({ type: 'paper/deletePaper', payload, callback }),
+    },
+  },
+})
+
+class Paper extends Component {
+
+  componentWillMount = () => {
+    const { match } = this.props;
+    const { params } = match;
+    const { id } = params;
+    this.props.dispatcher.paper.fetch({ exam_id: id});
+  };
+
+  delete = (id) => {
+    const { match } = this.props;
+    const { params } = match;
+    // eslint-disable-next-line
+    const exam_id = params.id;
+    this.props.dispatcher.paper.deletePaper({ id }, () => {
+      message.success('删除成功');
+      this.props.dispatcher.paper.fetch({ exam_id });
+    });
+  }
+
+  renderForm = (id) => {
+    return (
+      <Form layout="inline">
+        <FormItem
+          label="试卷名称"
+        >
+          <Input />
+        </FormItem>
+        <FormItem>
+          <Button type="primary" htmlType="submit" onClick={() => this.search()}>查询</Button>
+        </FormItem>
+        <FormItem>
+          <Button icon="plus" type="primary">
+            <Link to={`/exam/${id}/paper/add`}>新建试卷</Link>
+          </Button>
+        </FormItem>
+      </Form>
+    );
+  };
 
   render() {
     const { match } = this.props;
     const { params } = match;
     const { id } = params;
-    const data = [{
-      id: 1,
-      name: '试卷1',
-      total_score: 100,
-      create_time: '2018-04-30 06:55:31',
-      subjective_score: 70,
-      objective_score: 80,
-      exam_id: 1,
-      key: 1,
-    }, {
-      id: 2,
-      name: '试题2',
-      total_score: 2,
-      create_time: '2018-04-30 06:55:31',
-      subjective_score: 80,
-      objective_score: 80,
-      exam_id: 1,
-      key: 2,      
-    }, {
-      id: 3,
-      name: '试题3',
-      total_score: 1,
-      create_time: '2018-04-30 06:55:31',
-      subjective_score: 90,
-      objective_score: 80,
-      exam_id: 1,
-      key: 3,      
-    }];
+    const { paper, loading } = this.props;
+    const { list } = paper;
     const columns = [{
       title: 'id',
       dataIndex: 'id',
@@ -64,7 +97,7 @@ export default class Paper extends Component {
       title: '操作',
       render: (record) => (
         <div className={styles.action}>
-          <a href="">删除</a>
+          <a onClick={() => this.delete(record.id)}>删除</a>
           <Link to={`/exam/${record.exam_id}/paper/edit/${record.id}`}>编辑</Link>
         </div>),
     }];
@@ -74,16 +107,19 @@ export default class Paper extends Component {
         <h2>试卷管理</h2>
         <Card bordered={false}>
           <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderForm()}</div>
-            <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary">
-                <Link to={`/exam/${id}/paper/add`}>新建试卷</Link>
-              </Button>
-            </div>
-            <Table dataSource={data} columns={columns} />
+            <div className={styles.tableListOperator}>{this.renderForm(id)}</div>
+            <Table 
+              dataSource={list} 
+              columns={columns} 
+              rowKey='id' 
+              pagination={false} 
+              loading={loading.effects['paper/fetch']}
+            />
           </div>
         </Card>
       </div>
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Paper);

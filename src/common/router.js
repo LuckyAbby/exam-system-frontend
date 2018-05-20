@@ -100,11 +100,11 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['question'], () => import('../routes/Question')),
     },
     '/exam/:id/question/add': {
-      component: dynamicWrapper(app, [], () => import('../routes/Question/Add')),
+      component: dynamicWrapper(app, ['question'], () => import('../routes/Question/Add')),
     },
 
     '/exam/:id/paper/list': {
-      component: dynamicWrapper(app, [], () => import('../routes/Paper')),
+      component: dynamicWrapper(app, ['paper'], () => import('../routes/Paper')),
     },
     '/exam/:id/paper/edit/:paper_id': {
       component: dynamicWrapper(app, [], () => import('../routes/Paper/Edit')),
