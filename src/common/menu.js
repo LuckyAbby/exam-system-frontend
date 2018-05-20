@@ -22,68 +22,10 @@ const menuData = [
     ],
   },
   {
-    name: '考试配置管理',
+    name: '考试',
     icon: 'dashboard',
     path: 'exam',
-    authority: 'admin',
-    children: [
-      {
-        name: '考试配置信息',
-        path: ':id/config',
-      },
-    ],
-  },
-  {
-    name: '试题管理',
-    icon: 'question-circle-o',
-    path: 'exam/:id/question',
-    authority: 'admin',
-    children: [
-      {
-        name: '试题列表',
-        path: 'list',
-      },
-      {
-        name: '添加试题',
-        path: 'add',
-      },
-    ],
-  },
-  {
-    name: '试卷管理',
-    icon: 'file-text',
-    path: 'exam/:id/paper',
-    authority: 'admin',
-    children: [
-      {
-        name: '试卷列表',
-        path: 'list',
-      },
-      {
-        name: '添加试卷',
-        path: 'add',
-      },
-      {
-        name: '编辑试卷',
-        path: 'edit/:paper_id',
-      },
-    ],
-  },
-  {
-    name: '考生管理',
-    icon: 'team',
-    path: 'exam/:id/examinee',
-    authority: 'admin',
-    children: [
-      {
-        name: '考生列表',
-        path: 'list',
-      },
-      {
-        name: '添加考生',
-        path: 'add',
-      },
-    ],
+    authority: 'user',
   },
 ];
 

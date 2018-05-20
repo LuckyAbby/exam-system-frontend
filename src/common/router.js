@@ -89,33 +89,33 @@ export const getRouterData = app => {
     '/exam': {
       component: dynamicWrapper(app, ['exam'], () => import('../routes/Exam')),
     },
-    '/exam/:id': {
-      component: dynamicWrapper(app, ['user'], () => import('../layouts/BasicLayout')),
-    },
-    '/exam/:id/config': {
-      component: dynamicWrapper(app, [], () => import('../routes/Exam/Config')),
-    },
+    // '/exam/:id': {
+    //   component: dynamicWrapper(app, ['user'], () => import('../layouts/BasicLayout')),
+    // },
+    // '/exam/:id/config': {
+    //   component: dynamicWrapper(app, [], () => import('../routes/Exam/Config')),
+    // },
 
-    '/exam/:id/question/list': {
-      component: dynamicWrapper(app, ['question'], () => import('../routes/Question')),
-    },
-    '/exam/:id/question/add': {
-      component: dynamicWrapper(app, [], () => import('../routes/Question/Add')),
-    },
+    // '/exam/:id/question/list': {
+    //   component: dynamicWrapper(app, ['question'], () => import('../routes/Question')),
+    // },
+    // '/exam/:id/question/add': {
+    //   component: dynamicWrapper(app, [], () => import('../routes/Question/Add')),
+    // },
 
-    '/exam/:id/paper/list': {
-      component: dynamicWrapper(app, [], () => import('../routes/Paper')),
-    },
-    '/exam/:id/paper/edit/:paper_id': {
-      component: dynamicWrapper(app, [], () => import('../routes/Paper/Edit')),
-    },
-    '/exam/:id/paper/add': {
-      component: dynamicWrapper(app, [], () => import('../routes/Paper/Add')),
-    },
+    // '/exam/:id/paper/list': {
+    //   component: dynamicWrapper(app, [], () => import('../routes/Paper')),
+    // },
+    // '/exam/:id/paper/edit/:paper_id': {
+    //   component: dynamicWrapper(app, [], () => import('../routes/Paper/Edit')),
+    // },
+    // '/exam/:id/paper/add': {
+    //   component: dynamicWrapper(app, [], () => import('../routes/Paper/Add')),
+    // },
 
-    '/exam/:id/examinee/list': {
-      component: dynamicWrapper(app, [], () => import('../routes/Examinee')),
-    },
+    // '/exam/:id/examinee/list': {
+    //   component: dynamicWrapper(app, [], () => import('../routes/Examinee')),
+    // },
     // '/exam/:id/examinee/add': {
     //   component: dynamicWrapper(app, [], () => import('../routes/Examinee/Add')),
     // },
