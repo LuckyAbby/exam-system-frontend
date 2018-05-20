@@ -16,10 +16,10 @@ export default {
       if (response) {
         yield put({
           type: 'changeLoginStatus',
-          payload: { currentAuthority: 'admin' },
+          payload: { currentAuthority: 'user' },
         });
         // Login successfully
-        if (response.status === 'ok') {
+        if (response.success) {
           reloadAuthorized();
           yield put(routerRedux.push('/'));
         }
