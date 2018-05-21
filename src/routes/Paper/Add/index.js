@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
-import { Form, Input, Button, Row, Col, Modal, Table, Card, Tag } from 'antd';
+import { Form, Input, Button, Row, Col, Modal, Table, Card, Tag, message } from 'antd';
+import moment from 'moment';
+import _ from 'lodash';
 import styles from './index.less';
 
 const FormItem = Form.Item;
@@ -14,16 +16,21 @@ const TYPE = {
 
 const mapStateToProps = ({
   question,
+  paper,
 }) => ({
   question,
+  paper,
 });
 
 const mapDispatchToProps = dispatch => ({
   dispatch,
   dispatcher: {
     question: {
-      fetchQuestion: payload => dispatch({ type: 'question/fetch'}, payload),
+      fetch: payload => dispatch({ type: 'question/fetch', payload }),
     },
+    paper: {
+      create: (payload, callback) => dispatch({ type: 'paper/create', payload, callback }),
+    }
   }, 
 });
 
@@ -33,6 +40,8 @@ class Add extends Component {
     this.state = {
       visible: false,
       confirmLoading: false,
+      modalSelectedQuestions: [],
+      submitSelectedQuestions: [],
     }
   }
 
@@ -41,7 +50,7 @@ class Add extends Component {
     const { match } = this.props;
     const { params } = match;
     const { id } = params;
-    // this.props.dispatcher.question.fetchQuestion({ exam_id: id });
+    this.props.dispatcher.question.fetch({ exam_id: id });
   }
   
   showModal = () => {
@@ -52,26 +61,47 @@ class Add extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    const { match } = this.props;
+    const { params } = match;
+    const { id } = params;
+    const { submitSelectedQuestions } = this.state;
     this.props.form.validateFields((err, values) => {
-      if(!err) {
-        console.log('values', values);
-      }
+      if (err) return;
+      const data = _.pick(values, [
+        'name',
+        'total_score',
+        'subjective_score',
+        'objective_score',
+        'user',
+      ]);
+      data.exam_id = id;
+      const questions = submitSelectedQuestions.map(item => item.id);
+      data.questionIds = questions;
+      this.props.dispatcher.paper.create(data, () => {
+        message.success('创建试卷成功');
+      })
+
     })
   }
   
   handleOk = () => {
+    const { modalSelectedQuestions } = this.state;
     this.setState({
       confirmLoading: true,
     });
-    setTimeout(() => {
-      this.setState({
-        visible: false,
-        confirmLoading: false,
-      });
-    }, 2000);
+    this.setState({
+      visible: false,
+      confirmLoading: false,
+      submitSelectedQuestions: modalSelectedQuestions,
+    })
+    // setTimeout(() => {
+    //   this.setState({
+    //     visible: false,
+    //     confirmLoading: false,
+    //   });
+    // }, 2000);
   }
   handleCancel = () => {
-    console.log('Clicked cancel button');
     this.setState({
       visible: false,
     });
@@ -79,7 +109,7 @@ class Add extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { visible, confirmLoading } = this.state;
+    const { visible, confirmLoading, submitSelectedQuestions } = this.state;
     const { question } = this.props;
     const { list } = question;
     const formItemLayout = {
@@ -105,37 +135,12 @@ class Add extends Component {
       },
     };
 
-    // const questions = [{
-    //   id: 1,
-    //   name: '试题1',
-    //   type: 1,
-    //   create_time: '2018-04-30 06:55:31',
-    //   score: 1,
-    //   exam_id: 1,
-    //   key: 1,
-    // }, {
-    //   id: 2,
-    //   name: '试题2',
-    //   type: 2,
-    //   create_time: '2018-04-30 06:55:31',
-    //   score: 2,
-    //   exam_id: 1,
-    //   key: 2,
-    // }, {
-    //   id: 3,
-    //   name: '试题3',
-    //   type: 1,
-    //   create_time: '2018-04-30 06:55:31',
-    //   score: 1,
-    //   exam_id: 1,
-    //   key: 3,      
-    // }];
     const questionColumns = [{
       title: 'id',
       dataIndex: 'id',
     }, {
       title: '试题名称',
-      dataIndex: 'name',
+      dataIndex: 'title',
     }, {
       title: '试题类型',
       dataIndex: 'type',
@@ -143,6 +148,7 @@ class Add extends Component {
     }, {
       title: '创建时间',
       dataIndex: 'create_time',
+      render: (val) => (moment().format('YYYY-MM-DD h:mm:ss', val)),
     }, {
       title: '分数',
       dataIndex: 'score',
@@ -215,7 +221,7 @@ class Add extends Component {
               {...formItemLayout}
               label="阅卷人帐号"
             >
-              {getFieldDecorator('user_id', {
+              {getFieldDecorator('user', {
             rules: [{
               required: true, message:'请指定阅卷人帐号',
             }],
@@ -225,23 +231,23 @@ class Add extends Component {
             </FormItem>
 
             <Row>
-              <Col span={4}><h4>试题列表</h4></Col>
-              <Col span={12}>
+              <Col span={3} className={styles.col}><h4>试题列表:  </h4></Col>
+              <Col span={13}>
                 <Button type="primary" onClick={this.showModal}>添加试题</Button>
               </Col>
             </Row>
             
-            <div>
-              {list.map(item => (
+            <div >
+              {submitSelectedQuestions.map(item =>  (
                 <Card style={{ marginTop: 20 }} key={item.id}>
-                  <h4><Tag color="#87d068">{TYPE[item.type]}</Tag> {item.name}</h4>
-                  <p>A. 选项一</p>
+                  <h4><Tag color="#87d068">{TYPE[item.type]}</Tag> {item.title}</h4>
+                  {/* <p>A. 选项一</p>
                   <p>B. 选项2</p>
                   <p>C. 选3</p>
                   <p>D. 选4</p>
-                  <strong>正确答案 A</strong>
+                  <strong>正确答案 A</strong> */}
                 </Card>
-              ))}
+                ))}
             </div>
 
             <FormItem {...tailFormItemLayout}>
@@ -256,7 +262,7 @@ class Add extends Component {
           onOk={this.handleOk}
           confirmLoading={confirmLoading}
           onCancel={this.handleCancel}
-          style={{ top: 20, width: '90%' }}
+          width="80%"
         >
           <Table 
             dataSource={list} 
@@ -265,7 +271,8 @@ class Add extends Component {
             rowSelection={{
               onChange: (selectedRowKeys, selectedRows) => {
                 console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-               },
+                this.setState({ modalSelectedQuestions: selectedRows });
+              },
             }}
           />
         </Modal>
