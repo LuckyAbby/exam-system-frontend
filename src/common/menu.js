@@ -79,10 +79,6 @@ const menuData = [
         name: '考生列表',
         path: 'list',
       },
-      {
-        name: '添加考生',
-        path: 'add',
-      },
     ],
   },
 ];
