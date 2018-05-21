@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Table, Card, Form, Input, message } from 'antd';
 import { Link } from 'dva/router';
 import { connect } from 'dva';
+import moment from 'moment';
 import styles from './index.less';
 
 const FormItem = Form.Item;
@@ -91,13 +92,14 @@ class Question extends Component {
     }, {
       title: '创建时间',
       dataIndex: 'create_time',
+      render: (val) => (moment().format('YYYY-MM-DD h:mm:ss', val)),
     }, {
       title: '分数',
       dataIndex: 'score',
     }, {
       title: '考试id',
       dataIndex: 'exam_id',
-      render: (val) => (`201800${val}`)
+      render: (val) => (`201800${val}`),
     }, {
       title: '操作',
       render: (text) => (

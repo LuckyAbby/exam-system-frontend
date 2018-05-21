@@ -165,7 +165,7 @@ class Add extends Component {
 
     return (
       <div>
-        <h2>编辑试卷</h2>
+        <h2>添加试卷</h2>
         <div className={styles.wrapper}>
           <h4>试卷基本信息</h4>
           <Form onSubmit={this.handleSubmit}>

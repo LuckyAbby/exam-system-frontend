@@ -106,7 +106,9 @@ class Add extends Component {
     };
     
     return (
-      <div className={styles.wrapper}>
+      <div>
+        <h2>添加试题</h2>
+        <div className={styles.wrapper}>
         <Form onSubmit={this.handleSubmit}>
           <FormItem
             {...formItemLayout}
@@ -272,6 +274,7 @@ class Add extends Component {
             <Button type="primary" htmlType="submit">添加题目</Button>
           </FormItem>
         </Form>
+        </div>
       </div>
     )
   }

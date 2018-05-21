@@ -89,7 +89,7 @@ class Exam extends PureComponent {
           <Button type="primary" htmlType="submit" onClick={() => this.search()}>查询</Button>
         </FormItem>
         <FormItem>
-          <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>新建</Button>
+          <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>新建考试</Button>
         </FormItem>
       </Form>
     );
