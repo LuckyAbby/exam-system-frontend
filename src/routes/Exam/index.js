@@ -1,12 +1,11 @@
 import React, { PureComponent } from 'react';
-import { Card, Button, Form, Modal, Input, Table, DatePicker, message } from 'antd';
+import { Card, Table, message } from 'antd';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
+import moment from 'moment';
 import styles from './index.less';
 
-const FormItem = Form.Item;
-const { RangePicker } = DatePicker;
-const state = ['未上线', '已上线', '已下线'];
+const STATE = ['未上线', '已上线', '已下线'];
 
 
 const mapStateToProps = ({
@@ -30,43 +29,12 @@ const mapDispatchToProps = dispatch => ({
 
 class Exam extends PureComponent {
   state = {
-    modalVisible: false,
   };
 
   componentWillMount = () => {
     this.props.dispatcher.exam.fetch();
   }
-  
 
-  handleModalVisible = flag => {
-    this.setState({
-      modalVisible: !!flag,
-    });
-  };
-
-  okHandle = () => {
-    this.props.form.validateFields((err, values) => {
-      if (err) return;
-      const data = {
-        name: values.name,
-        time: values.time,
-        state: 0,
-        start_time: values.exam_time[0].toDate(),
-        end_time: values.exam_time[1].toDate(),
-      }
-      this.props.dispatcher.exam.create(data, () => {
-        message.success('创建成功');
-        this.props.form.resetFields();
-        this.handleModalVisible(false);
-        this.props.dispatcher.exam.fetch();
-      });
-    });
-  }
-
-  search = () => {
-    const value = this.props.form.getFieldsValue()
-    console.log('value', value);
-  }
 
   delete = (id) => {
     this.props.dispatcher.exam.deleteExam({ id }, () => {
@@ -75,43 +43,18 @@ class Exam extends PureComponent {
     })
   }
 
-  renderForm = () => {
-    return (
-      <Form layout="inline">
-        <FormItem
-          label="考试名称"
-        >
-          {this.props.form.getFieldDecorator('searchName', {})
-        (<Input type="text" />)}
-        </FormItem>
-        <FormItem>
-          <Button type="primary" htmlType="submit" onClick={() => this.search()}>查询</Button>
-        </FormItem>
-        <FormItem>
-          <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>新建</Button>
-        </FormItem>
-      </Form>
-    );
-  }
 
   render() {
-    const { modalVisible } = this.state;
     const { exam, loading } = this.props;
-    const { list } = exam;
+    const { exams, examPaper } = exam;
     const columns = [
-      {
-        title: 'id',
-        key: 'id',
-        dataIndex: 'id',
-        render: val => <Link to={`/exam/${val}`}>{`201800${val}`}</Link>,
-      },
       {
         title: '考试名称',
         key: 'name',
         dataIndex: 'name',
       },
       {
-        title: '考试时长',
+        title: '考试时长(min)',
         key: 'time',
         dataIndex: 'time',
       },
@@ -119,80 +62,61 @@ class Exam extends PureComponent {
         title: '考试开始时间',
         key: 'start_time',
         dataIndex: 'start_time',
+        render(val) {
+          return moment(val).format("YYYY/MM/DD HH:mm:ss")
+        },
       },
       {
         title: '考试结束时间',
         key: 'end_time',
         dataIndex: 'end_time',
+        render(val) {
+          return moment(val).format("YYYY/MM/DD HH:mm:ss")
+        },
       },
       {
         title: '考试状态',
         key: 'state',
         dataIndex: 'state',
         render(val) {
-          return <p>{state[val]}</p>;
+          return <p>{STATE[val]}</p>;
         },
       },
       {
-        title: '创建时间',
-        key: 'create_time',
-        dataIndex: 'create_time',
-      },
-      {
         title: '操作',
-        render: text => {
-          if (text.state === 0) {
+        render: record => {
+          // 考试未开始
+          if (moment().isBefore(record.start_time)) {
             return (
-              <div className={styles.action}>
-                <a onClick={() => this.delete(text.id)}>删除</a>
-                <Link to={`/exam/${text.id}`}>编辑</Link>
-                <a href="">上线</a>
-              </div>
+              <div>考试未开始</div>
             );
-          } else if (text.state === 1) {
+          }
+          if (moment().isAfter(record.end_time)) {
             return (
-              <div className={styles.action}>
-                <a onClick={() => this.delete(text.id)}>删除</a>
-                <Link to={`/exam/${text.id}`}>编辑</Link>
-                <a href="">下线</a>
-              </div>
+              <div>考试已结束</div>
             );
-          } else {
+          }
+          if (examPaper[record.id]) {
             return (
               <div className={styles.action}>
-                <a onClick={() =>this.delete(text.id)}>删除</a>
-                <Link to={`/exam/${text.id}`}>编辑</Link>
-                <a href="">重新上线</a>
+                <Link to={`/exam/${record.id}`}>开始考试</Link>
               </div>
             );
           }
+          return (
+            <div>等待分配试卷</div>
+          );
         },
       },
     ];
 
- 
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 6 },
-      },
-      wrapperCol: {
-        xs: { span: 15 },
-      },
-    };
 
-    const { getFieldDecorator } = this.props.form;
     return (
       <div>
-        <Card bordered={false}>
+        <Card bordered={false} title="我的考试列表">
           <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderForm()}</div>
-            {/* <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
-                新建
-              </Button>
-            </div> */}
             <Table 
-              dataSource={list} 
+              dataSource={exams} 
               columns={columns} 
               rowKey='id' 
               pagination={false} 
@@ -200,61 +124,10 @@ class Exam extends PureComponent {
             />
           </div>
         </Card>
-        <Modal 
-          visible={modalVisible}
-          onCancel={() => this.handleModalVisible()}
-          onOk={this.okHandle}
-          maskClosable={false}
-          destroyOnClose
-          confirmLoading={loading.effects['exam/create']}
-        >
-          <Form onSubmit={this.handleSubmit}>
-            <FormItem
-              {...formItemLayout}
-              label="考试名称"
-            >
-              {getFieldDecorator('name', {
-            rules: [{
-              required: true, message: '请输入考试名称',
-            }],
-          })(
-            <Input type="text" />
-          )}
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="考试时长"
-            >
-              {getFieldDecorator('time', {
-            rules: [{
-              required: true, message: '请输入考试时长',
-            }],
-          })(
-            <Input type="number" />
-          )}
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="考试时间"
-            >
-              {getFieldDecorator('exam_time', {
-                rules: [{
-                  required: true, message: '请选择考试时间',
-                }],
-              })(
-                <RangePicker
-                  format="YYYY-MM-DD HH:mm"
-                  showTime={{ format: 'HH:mm' }}
-                  placeholder={['开始时间', '结束时间']}
-                />
-              )}
-            </FormItem>
-          </Form>
-        </Modal>
       </div>
     );
   }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(Exam));
+export default connect(mapStateToProps, mapDispatchToProps)(Exam);

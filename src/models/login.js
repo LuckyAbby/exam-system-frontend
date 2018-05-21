@@ -25,8 +25,9 @@ export default {
         }
       }
     },
-    *logout(_, { put, select }) {
+    *logout(_, { put, call, select }) {
       try {
+        yield call(services.logout);
         // get location pathname
         const urlParams = new URL(window.location.href);
         const pathname = yield select(state => state.routing.location.pathname);

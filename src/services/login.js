@@ -6,3 +6,9 @@ export async function login(params) {
     body: params,
   });
 }
+
+export async function logout() {
+  return request('/api/logout', {
+    method: 'POST',
+  });
+}

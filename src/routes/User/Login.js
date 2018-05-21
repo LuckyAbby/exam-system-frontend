@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
+import { Link } from 'dva/router';
 import { Checkbox, Alert } from 'antd';
 import Login from 'components/Login';
 import styles from './Login.less';
@@ -59,6 +60,9 @@ export default class LoginPage extends Component {
             <Checkbox checked={this.state.autoLogin} onChange={this.changeAutoLogin}>
               自动登录
             </Checkbox>
+            <Link className={styles.register} style={{ float: 'right' }} to="/user/register">
+              注册账户
+            </Link>
           </div>
           <Submit loading={submitting}>登录</Submit>
         </Login>

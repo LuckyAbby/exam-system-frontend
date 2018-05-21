@@ -16,7 +16,6 @@ dynamic.setDefaultLoadingComponent(() => {
 function RouterConfig({ history, app }) {
   const routerData = getRouterData(app);
   const UserLayout = routerData['/user'].component;
-  // const BasicLayout = routerData['/exam/:id'].component;
   const ExamLayout = routerData['/'].component;
   
   return (
@@ -24,7 +23,6 @@ function RouterConfig({ history, app }) {
       <ConnectedRouter history={history}>
         <Switch>
           <Route path="/user" component={UserLayout} />
-          {/* <Route path="/exam/:id" component={BasicLayout} /> */}
           <AuthorizedRoute
             path="/"
             render={props => <ExamLayout {...props} />}

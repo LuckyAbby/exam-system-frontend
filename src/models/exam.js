@@ -1,11 +1,11 @@
-import _ from 'lodash';
-import { query as queryExams, create, deleteExam, getOne, update } from '../services/exam';
+import { query as queryExams, getOne } from '../services/exam';
 
 export default {
   namespace: 'exam',
 
   state: {
-    list: [],
+    exams: [],
+    examPaper: {},
   },
 
   effects: {
@@ -13,18 +13,8 @@ export default {
       const { content } = yield call(queryExams);
       yield put({
         type: 'save',
-        payload: content.exams,
+        payload: {...content },
       });
-    },
-
-    *create({ payload, callback }, { call }) {
-      yield call(create, payload);
-      if (_.isFunction(callback)) callback();
-    },
-
-    *deleteExam({ payload, callback }, { call }) {
-      yield call(deleteExam, payload);
-      if (_.isFunction(callback)) callback();
     },
 
     *getOne(action, { call, put }) {
@@ -34,25 +24,14 @@ export default {
         payload: content.exam,
       })
     },
-
-    *update({ payload, callback}, { call }) {
-      yield call(update, payload);
-      if(_.isFunction(callback)) callback();
-    },
   },
 
   reducers: {
-    save(state, action) {
+    save(state, {payload}) {
       return {
         ...state,
-        list: action.payload,
+        ...payload,
       };
-    },
-    saveOne(state, action) {
-      return {
-        ...state,
-        config: action.payload,
-      }
     },
   },
 };

@@ -1,43 +1,22 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Icon, message } from 'antd';
+import { Layout, Icon } from 'antd';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'dva';
-import { Route, Redirect, Switch, routerRedux } from 'dva/router';
+import { Route, Redirect, Switch } from 'dva/router';
 import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
 import pathToRegexp from 'path-to-regexp';
-import { enquireScreen, unenquireScreen } from 'enquire-js';
 import GlobalHeader from '../components/GlobalHeader';
 import GlobalFooter from '../components/GlobalFooter';
 import NotFound from '../routes/Exception/404';
 import { getRoutes } from '../utils/utils';
 import Authorized from '../utils/Authorized';
-import { getMenuData } from '../common/menu';
-import logo from '../assets/logo.svg';
 
 const { Content, Header, Footer } = Layout;
 const { AuthorizedRoute, check } = Authorized;
 
 
-/**
- * 获取面包屑映射
- * @param {Object} menuData 菜单配置
- * @param {Object} routerData 路由配置
- */
-const getBreadcrumbNameMap = (menuData, routerData) => {
-  const result = {};
-  const childResult = {};
-  for (const i of menuData) {
-    if (!routerData[i.path]) {
-      result[i.path] = i;
-    }
-    if (i.children) {
-      Object.assign(childResult, getBreadcrumbNameMap(i.children, routerData));
-    }
-  }
-  return Object.assign({}, routerData, result, childResult);
-};
 
 const query = {
   'screen-xs': {
@@ -60,10 +39,6 @@ const query = {
   },
 };
 
-let isMobile;
-enquireScreen(b => {
-  isMobile = b;
-});
 
 class BasicLayout extends React.PureComponent {
   static childContextTypes = {
@@ -71,27 +46,19 @@ class BasicLayout extends React.PureComponent {
     breadcrumbNameMap: PropTypes.object,
   };
   state = {
-    isMobile,
   };
   getChildContext() {
-    const { location, routerData } = this.props;
+    const { location } = this.props;
     return {
       location,
-      breadcrumbNameMap: getBreadcrumbNameMap(getMenuData(), routerData),
     };
   }
   componentDidMount() {
-    this.enquireHandler = enquireScreen(mobile => {
-      this.setState({
-        isMobile: mobile,
-      });
-    });
     this.props.dispatch({
       type: 'user/fetchCurrent',
     });
   }
   componentWillUnmount() {
-    unenquireScreen(this.enquireHandler);
   }
   getPageTitle() {
     const { routerData, location } = this.props;
@@ -129,34 +96,10 @@ class BasicLayout extends React.PureComponent {
     }
     return redirect;
   };
-  handleMenuCollapse = collapsed => {
-    this.props.dispatch({
-      type: 'global/changeLayoutCollapsed',
-      payload: collapsed,
-    });
-  };
-  handleNoticeClear = type => {
-    message.success(`清空了${type}`);
-    this.props.dispatch({
-      type: 'global/clearNotices',
-      payload: type,
-    });
-  };
   handleMenuClick = ({ key }) => {
-    if (key === 'triggerError') {
-      this.props.dispatch(routerRedux.push('/exception/trigger'));
-      return;
-    }
     if (key === 'logout') {
       this.props.dispatch({
         type: 'login/logout',
-      });
-    }
-  };
-  handleNoticeVisibleChange = visible => {
-    if (visible) {
-      this.props.dispatch({
-        type: 'global/fetchNotices',
       });
     }
   };
@@ -164,8 +107,6 @@ class BasicLayout extends React.PureComponent {
     const {
       currentUser,
       collapsed,
-      fetchingNotices,
-      notices,
       routerData,
       match,
     } = this.props;
@@ -175,16 +116,9 @@ class BasicLayout extends React.PureComponent {
       <Layout>
         <Header style={{ padding: 0 }}>
           <GlobalHeader
-            logo={logo}
             currentUser={currentUser}
-            fetchingNotices={fetchingNotices}
-            notices={notices}
             collapsed={collapsed}
-            isMobile={this.state.isMobile}
-            onNoticeClear={this.handleNoticeClear}
-            onCollapse={this.handleMenuCollapse}
             onMenuClick={this.handleMenuClick}
-            onNoticeVisibleChange={this.handleNoticeVisibleChange}
             title="校招考试系统"
           />
         </Header>

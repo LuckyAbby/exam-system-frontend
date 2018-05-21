@@ -1,12 +1,13 @@
 import React, { Fragment } from 'react';
-import { Link, Redirect, Switch, Route } from 'dva/router';
+import { Link, Redirect, Switch } from 'dva/router';
 import DocumentTitle from 'react-document-title';
 import { Icon } from 'antd';
 import GlobalFooter from '../components/GlobalFooter';
 import styles from './UserLayout.less';
-// import logo from '../assets/logo.svg';
 import { getRoutes } from '../utils/utils';
+import Authorized from '../utils/Authorized';
 
+const { AuthorizedRoute } = Authorized;
 const links = [
   {
     key: 'help',
@@ -51,18 +52,20 @@ class UserLayout extends React.PureComponent {
               <div className={styles.header}>
                 <Link to="/">
                   {/* <img alt="logo" className={styles.logo} src={logo} /> */}
-                  <span className={styles.title}>考生登录</span>
+                  <span className={styles.title}>考生系统</span>
                 </Link>
               </div>
-              <div className={styles.desc}>使用帐号密码登录</div>
+              {/* <div className={styles.desc}>使用帐号密码登录</div> */}
             </div>
             <Switch>
               {getRoutes(match.path, routerData).map(item => (
-                <Route
+                <AuthorizedRoute
                   key={item.key}
                   path={item.path}
                   component={item.component}
                   exact={item.exact}
+                  authority={item.authority}
+                  redirectPath="/"
                 />
               ))}
               <Redirect exact from="/user" to="/user/login" />

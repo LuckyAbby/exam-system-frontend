@@ -76,48 +76,23 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['login'], () => import('../routes/User/Login')),
     },
     '/user/register': {
-      component: dynamicWrapper(app, ['register'], () => import('../routes/User/Register')),
-    },
-    '/user/register-result': {
-      component: dynamicWrapper(app, [], () => import('../routes/User/RegisterResult')),
+      component: dynamicWrapper(app, ['register'], () => import('../routes/User/Register')),      
     },
 
-    // 考试列表
     '/': {
-      component: dynamicWrapper(app, ['exam'], () => import('../layouts/ExamLayout')),
+      component: dynamicWrapper(app, ['user'], () => import('../layouts/ExamLayout')),
     },
+    // 考试列表    
     '/exam': {
       component: dynamicWrapper(app, ['exam'], () => import('../routes/Exam')),
     },
+    // 参加某个考试
     // '/exam/:id': {
-    //   component: dynamicWrapper(app, ['user'], () => import('../layouts/BasicLayout')),
+    //   component: dynamicWrapper(app, ['user'], () => import('../routes/Exam/Paper')),
     // },
-    // '/exam/:id/config': {
-    //   component: dynamicWrapper(app, [], () => import('../routes/Exam/Config')),
-    // },
-
-    // '/exam/:id/question/list': {
-    //   component: dynamicWrapper(app, ['question'], () => import('../routes/Question')),
-    // },
-    // '/exam/:id/question/add': {
-    //   component: dynamicWrapper(app, [], () => import('../routes/Question/Add')),
-    // },
-
-    // '/exam/:id/paper/list': {
-    //   component: dynamicWrapper(app, [], () => import('../routes/Paper')),
-    // },
-    // '/exam/:id/paper/edit/:paper_id': {
-    //   component: dynamicWrapper(app, [], () => import('../routes/Paper/Edit')),
-    // },
-    // '/exam/:id/paper/add': {
-    //   component: dynamicWrapper(app, [], () => import('../routes/Paper/Add')),
-    // },
-
-    // '/exam/:id/examinee/list': {
-    //   component: dynamicWrapper(app, [], () => import('../routes/Examinee')),
-    // },
-    // '/exam/:id/examinee/add': {
-    //   component: dynamicWrapper(app, [], () => import('../routes/Examinee/Add')),
+    // 考试分数 一个考试可能有多张试卷 
+    // '/result': {
+    //   component: dynamicWrapper(app, ['user'], () => import('.../routes/Result')),
     // },
   };
   // Get name from ./menu.js or just set it in the router data.
