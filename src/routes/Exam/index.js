@@ -120,13 +120,13 @@ class Exam extends PureComponent {
         title: '考试开始时间',
         key: 'start_time',
         dataIndex: 'start_time',
-        render:  (val) => (moment().format('YYYY-MM-DD h:mm:ss', val)),
+        render:  (val) => (moment(val).format('YYYY-MM-DD h:mm:ss', val)),
       },
       {
         title: '考试结束时间',
         key: 'end_time',
         dataIndex: 'end_time',
-        render:  (val) => (moment().format('YYYY-MM-DD h:mm:ss', val)),
+        render:  (val) => (moment(val).format('YYYY-MM-DD h:mm:ss', val)),
       },
       {
         title: '考试状态',
@@ -140,7 +140,7 @@ class Exam extends PureComponent {
         title: '创建时间',
         key: 'create_time',
         dataIndex: 'create_time',
-        render:  (val) => (moment().format('YYYY-MM-DD h:mm:ss', val)),
+        render:  (val) => (moment(val).format('YYYY-MM-DD h:mm:ss', val)),
       },
       {
         title: '操作',

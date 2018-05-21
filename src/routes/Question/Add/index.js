@@ -72,9 +72,11 @@ class Add extends Component {
           }]
         }
         // console.log('data', data);
-        this.props.dispatcher.question.create(data, () => {
-          message.success('新增试题成功');
-        });
+        // this.props.dispatcher.question.create(data, () => {
+        //   message.success('新增试题成功');
+        // });
+        this.props.dispatcher.question.create(data)
+          .then(message.success('新增试题成功'));
       }
     });
   }
