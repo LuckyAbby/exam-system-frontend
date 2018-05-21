@@ -140,6 +140,7 @@ class Exam extends PureComponent {
         title: '创建时间',
         key: 'create_time',
         dataIndex: 'create_time',
+        render:  (val) => (moment().format('YYYY-MM-DD h:mm:ss', val)),
       },
       {
         title: '操作',

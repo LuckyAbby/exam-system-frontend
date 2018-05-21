@@ -97,6 +97,7 @@ class Question extends Component {
     }, {
       title: '考试id',
       dataIndex: 'exam_id',
+      render: (val) => (`201800${val}`)
     }, {
       title: '操作',
       render: (text) => (
