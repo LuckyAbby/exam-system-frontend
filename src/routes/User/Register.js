@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { routerRedux, Link } from 'dva/router';
-import { Form, Input, Button, Popover, Progress } from 'antd';
+import { Form, Input, Button, Popover, Progress, Radio } from 'antd';
 import styles from './Register.less';
 
 const FormItem = Form.Item;
+const RadioGroup = Radio.Group;
 
 const passwordStatusMap = {
   ok: <div className={styles.success}>强度：强</div>,
@@ -202,6 +203,25 @@ export default class Register extends Component {
               ],
             })(<Input size="large" placeholder="电话" />)}
           </FormItem>
+
+          <FormItem>
+            {getFieldDecorator('sex', {
+              rules: [
+                {
+                  required: true,
+                  message: '请选择性别！',
+                },
+              ],
+              initialValue: 1,
+            })(
+              <RadioGroup>
+                <Radio value={1}>男</Radio>
+                <Radio value={2}>女</Radio>
+              </RadioGroup>
+            )}
+          </FormItem>
+          
+         
           <FormItem>
             <Button
               size="large"
