@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Radio, Input, Button, message } from 'antd';
+import { Form, Radio, Input, Button } from 'antd';
 import _ from 'lodash';
 import { connect } from 'dva';
 import styles from './index.less';

@@ -30,7 +30,7 @@ const mapDispatchToProps = dispatch => ({
     },
     paper: {
       create: (payload, callback) => dispatch({ type: 'paper/create', payload, callback }),
-    }
+    },
   }, 
 });
 
@@ -262,7 +262,8 @@ class Add extends Component {
           onOk={this.handleOk}
           confirmLoading={confirmLoading}
           onCancel={this.handleCancel}
-          width="80%"
+          width="90%"
+          style={{ top: 20 }}
         >
           <Table 
             dataSource={list} 
