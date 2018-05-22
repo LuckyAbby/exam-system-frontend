@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Table, Card, Form, Input, message } from 'antd';
+import moment from 'moment';
 import { Link } from 'dva/router';
 import { connect } from 'dva';
 import styles from './index.less';
@@ -91,19 +92,20 @@ class Question extends Component {
     }, {
       title: '创建时间',
       dataIndex: 'create_time',
+      render: (val) => moment(val).format('YYYY-MM-DD HH:mm:ss'),
     }, {
       title: '分数',
       dataIndex: 'score',
     }, {
       title: '考试id',
       dataIndex: 'exam_id',
-      render: (val) => (`201800${val}`)
+      render: (val) => (`201800${val}`),
     }, {
       title: '操作',
-      render: (text) => (
+      render: (record) => (
         <div className={styles.action}>
-          <a onClick={() => this.delete(text.id)}>删除</a>
-          <Link to={`/exam/${id}/question/add`}>编辑</Link>
+          <a onClick={() => this.delete(record.id)}>删除</a>
+          <Link to={`/exam/${id}/question/edit/${record.id}`}>编辑</Link>
         </div>),
     }];
 

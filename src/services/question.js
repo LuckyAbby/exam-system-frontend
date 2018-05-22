@@ -16,3 +16,14 @@ export async function deleteQuestion(params) {
     method: 'DELETE',
   })
 }
+
+export async function fetchOne(params) {
+  return request(`/api/question/${params.id}`);
+}
+
+export async function updateQuestion(params) {
+  return request('/api/question', {
+    method: 'PUT',
+    body: params,
+  });
+}

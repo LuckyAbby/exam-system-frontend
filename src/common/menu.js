@@ -47,6 +47,10 @@ const menuData = [
         name: '添加试题',
         path: 'add',
       },
+      {
+        name: '编辑试题',
+        path: 'edit/:question_id',
+      },
     ],
   },
   {
