@@ -1,10 +1,11 @@
 import _ from 'lodash';
-import { query, create, deleteQuestion } from '../services/question';
+import { query, create, deleteQuestion, fetchOne, updateQuestion } from '../services/question';
 
 export default {
   namespace: 'question',
   state: {
     list: [],
+    info: {}, // 某个question
   },
 
   effects: {
@@ -16,14 +17,25 @@ export default {
       });
     },
 
-    *create({ payload, callback }, { call }) {
+    *create({ payload }, { call }) {
       yield call(create, payload);
-      if(_.isFunction(callback)) callback();
+    },
+
+    *update({ payload }, { call }) {
+      yield call(updateQuestion, payload);
     },
 
     *deleteQuestion({ payload, callback }, { call }) {
       yield call(deleteQuestion, payload);
       if(_.isFunction(callback)) callback();
+    },
+
+    *getOne({ payload }, { call, put }) {
+      const { content }  = yield call(fetchOne, payload);
+      yield put({
+        type: 'saveOne',
+        payload: content.question,
+      });
     },
   },
 
@@ -32,6 +44,12 @@ export default {
       return {
         ...state,
         list: payload,
+      }
+    },
+    saveOne(state, { payload }) {
+      return {
+        ...state,
+        info: payload,
       }
     },
   },
