@@ -16,3 +16,7 @@ export async function deletePaper(params) {
     method: 'DELETE',
   });
 }
+
+export async function getOne(params) {
+  return request(`/api/paper/${params.id}`);
+}

@@ -1,10 +1,11 @@
 import _ from 'lodash';
-import { query, create, deletePaper } from '../services/paper';
+import { query, create, deletePaper, getOne } from '../services/paper';
 
 export default {
   namespace: 'paper',
   state: {
     list: [],
+    paperDetail: {},
   },
 
   effects: {
@@ -25,6 +26,14 @@ export default {
       yield call(deletePaper, payload);
       if(_.isFunction(callback)) callback();
     },
+
+    *getOne(action, { call, put }) {
+      const { content } = yield call(getOne, action.payload);
+      yield put({
+        type: 'saveOne',
+        payload: content.paper,
+      })
+    },
   },
 
   reducers: {
@@ -32,6 +41,13 @@ export default {
       return {
         ...state,
         list: payload,
+      }
+    },
+
+    saveOne(state, { payload }) {
+      return {
+        ...state,
+        paperDetail: payload,
       }
     },
   },

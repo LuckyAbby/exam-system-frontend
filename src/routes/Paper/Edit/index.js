@@ -12,6 +12,11 @@ const mapStateToProps = () => ({});
 
 const mapDispatchToProps = dispatch => ({
   dispatch,
+  dispatcher: {
+    paper: {
+      fetchOne: payload => dispatch({ type: 'paper/getOne', payload }),
+    },
+  },
 });
 
 class Edit extends Component {
@@ -31,6 +36,7 @@ class Edit extends Component {
       message.warning('请选择试卷后再编辑')
       this.props.dispatch(routerRedux.push(`/exam/${id}/paper/list`));
     }
+    this.props.dispatcher.paper.fetchOne({ id });
   }
   
 
