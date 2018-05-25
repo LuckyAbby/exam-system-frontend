@@ -29,7 +29,6 @@ export default {
 
     *getOne(action, { call, put }) {
       const { content } = yield call(getOne, action.payload);
-      console.log('content', content);
       yield put({
         type: 'saveOne',
         payload: content.paper,
