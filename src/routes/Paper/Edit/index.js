@@ -8,7 +8,11 @@ import styles from './index.less';
 const FormItem = Form.Item;
 
 
-const mapStateToProps = () => ({});
+const mapStateToProps = ({
+  paper,
+}) => ({
+  paper,
+});
 
 const mapDispatchToProps = dispatch => ({
   dispatch,
@@ -46,6 +50,9 @@ class Edit extends Component {
     const { paper_id: paperId } = params;
     const { getFieldDecorator } = this.props.form;
     const { questions } = this.state;
+    const { paper } = this.props;
+    console.log('paper', paper);
+    const { paperDetail } = paper;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -83,6 +90,7 @@ class Edit extends Component {
             rules: [{
               required: true, message: '请输入试卷的名称',
             }],
+            initialValue: paperDetail.name,
             })(
               <Input type="text" />
             )}
@@ -95,6 +103,7 @@ class Edit extends Component {
             rules: [{
               required: true, message: '请输入考试的总分',
             }],
+            initialValue: paperDetail.total_score,
           })(
             <Input type="number" />
           )}
@@ -107,6 +116,7 @@ class Edit extends Component {
             rules: [{
               required: true, message: '请输入主观题分数',
             }],
+            initialValue: paperDetail.subjective_score,
           })(
             <Input type="number" />
           )}
@@ -119,6 +129,7 @@ class Edit extends Component {
             rules: [{
               required: true, message:' 请输入客观题分数',
             }],
+            initialValue: paperDetail.objective_score,
           })(
             <Input type="number" />
           )}
@@ -131,6 +142,7 @@ class Edit extends Component {
             rules: [{
               required: true, message:'请指定阅卷人帐号',
             }],
+            initialValue: paperDetail.user,
           })(
             <Input type="text" />
           )}
