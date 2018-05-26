@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { query, create, deletePaper, getOne } from '../services/paper';
+import { query, create, deletePaper, getOne, update } from '../services/paper';
 
 export default {
   namespace: 'paper',
@@ -33,6 +33,11 @@ export default {
         type: 'saveOne',
         payload: content.paper,
       })
+    },
+
+    *update({ payload, callback }, { call }) {
+      yield call(update, payload);
+      if(_.isFunction(callback)) callback();
     },
   },
 

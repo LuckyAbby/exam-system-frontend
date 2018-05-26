@@ -20,3 +20,10 @@ export async function deletePaper(params) {
 export async function getOne(params) {
   return request(`/api/paper/${params.id}`);
 }
+
+export async function update(params) {
+  return request(`/api/paper`, {
+    method: 'PUT',
+    body: params,
+  });
+}
