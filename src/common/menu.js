@@ -67,10 +67,6 @@ const menuData = [
         name: '添加试卷',
         path: 'add',
       },
-      // {
-      //   name: '编辑试卷',
-      //   path: 'edit/:paper_id',
-      // },
     ],
   },
   {
@@ -81,6 +77,18 @@ const menuData = [
     children: [
       {
         name: '考生列表',
+        path: 'list',
+      },
+    ],
+  },
+  {
+    name: '阅卷管理',
+    icon: 'team',
+    path: 'exam/:id/checkPaper',
+    authority: 'admin',
+    children: [
+      {
+        name: '试卷列表',
         path: 'list',
       },
     ],
