@@ -215,8 +215,8 @@ export default class Register extends Component {
               initialValue: 1,
             })(
               <RadioGroup>
-                <Radio value={1}>男</Radio>
-                <Radio value={2}>女</Radio>
+                <Radio value={0}>男</Radio>
+                <Radio value={1}>女</Radio>
               </RadioGroup>
             )}
           </FormItem>
