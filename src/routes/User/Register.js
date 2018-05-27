@@ -212,7 +212,7 @@ export default class Register extends Component {
                   message: '请选择性别！',
                 },
               ],
-              initialValue: 1,
+              initialValue: 0,
             })(
               <RadioGroup>
                 <Radio value={0}>男</Radio>

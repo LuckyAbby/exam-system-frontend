@@ -86,6 +86,11 @@ export const getRouterData = app => {
     '/exam': {
       component: dynamicWrapper(app, ['exam'], () => import('../routes/Exam')),
     },
+
+    // 考试页面
+    '/paper/:id': {
+      component: dynamicWrapper(app, ['paper'], () => import('../routes/Paper')),
+    },
     // 参加某个考试
     // '/exam/:id': {
     //   component: dynamicWrapper(app, ['user'], () => import('../routes/Exam/Paper')),

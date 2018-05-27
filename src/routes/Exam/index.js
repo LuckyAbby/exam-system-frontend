@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Card, Table, message } from 'antd';
+import { Card, Table, message, Button } from 'antd';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
 import moment from 'moment';
@@ -74,38 +74,64 @@ class Exam extends PureComponent {
           return moment(val).format("YYYY/MM/DD HH:mm:ss")
         },
       },
+      // {
+      //   title: '考试状态',
+      //   key: 'state',
+      //   dataIndex: 'state',
+      //   render(val) {
+      //     return <p>{STATE[val]}</p>;
+      //   },
+      // },
       {
-        title: '考试状态',
-        key: 'state',
-        dataIndex: 'state',
-        render(val) {
-          return <p>{STATE[val]}</p>;
+        title: '考试成绩',
+        render(text, val) {
+          return (
+            <p>{val.user_paper && val.user_paper.grade !== null 
+              ? val.user_paper.grade : '无'}
+            </p>
+          );
         },
       },
+      // {
+      //   title: '考试成绩',
+      //   key: 'state',
+      //   dataIndex: 'state',
+      //   render(val) {
+      //     return <p>{STATE[val]}</p>;
+      //   },
+      // },
       {
         title: '操作',
         render: record => {
-          // 考试未开始
-          if (moment().isBefore(record.start_time)) {
-            return (
-              <div>考试未开始</div>
-            );
-          }
-          if (moment().isAfter(record.end_time)) {
-            return (
-              <div>考试已结束</div>
-            );
-          }
-          if (examPaper[record.id]) {
-            return (
-              <div className={styles.action}>
-                <Link to={`/exam/${record.id}`}>开始考试</Link>
-              </div>
-            );
+          if (record.user_paper && record.user_paper.grade !== null ) {
+            return 
           }
           return (
-            <div>等待分配试卷</div>
+            <Link to={`/paper/${record.user_paper.paper_id}`}>
+              <Button type="primary" size="small">开始考试</Button>
+            </Link>
           );
+          // // 考试未开始
+          // if (moment().isBefore(record.start_time)) {
+          //   return (
+          //     <div>考试未开始</div>
+          //   );
+          // }
+          // if (moment().isAfter(record.end_time)) {
+          //   return (
+          //     <div>考试已结束</div>
+          //   );
+          // }
+          // if (examPaper[record.id]) {
+          //   return (
+          //     <div className={styles.action}>
+          //       <Link to={`/exam/${record.id}`}>开始考试</Link>
+          //     </div>
+          //   );
+          // }
+          // return (
+          //   <div>等待分配试卷</div>
+          // );
         },
       },
     ];
