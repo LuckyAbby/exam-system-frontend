@@ -78,7 +78,7 @@ class Examinee extends Component {
     })
   }
 
-  renderForm = (id) => {
+  renderForm = () => {
     return (
       <Form layout="inline">
         <FormItem
@@ -91,7 +91,6 @@ class Examinee extends Component {
         </FormItem>
         <FormItem>
           <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
-            {/* <Link to={`/exam/${id}/examinee/add`}>新增考生信息</Link> */}
             新增考生信息
           </Button>
         </FormItem>

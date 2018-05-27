@@ -42,7 +42,7 @@ function checkStatus(response) {
  * @param  {object} [options] The options we want to pass to "fetch"
  * @return {object}           An object containing either "data" or "err"
  */
-export default function request(url, options) {
+export default async function request(url, options) {
   const defaultOptions = {
     credentials: 'include',
   };
@@ -64,33 +64,39 @@ export default function request(url, options) {
     }
   }
 
-  return fetch(url, newOptions)
-    .then(checkStatus)
-    .then(response => {
-      if (newOptions.method === 'DELETE' || response.status === 204) {
-        return response.text();
-      }
-      return response.json();
-    })
-    .catch(e => {
-      const { dispatch } = store;
-      const status = e.name;
-      if (status === 401) {
-        dispatch({
-          type: 'login/logout',
-        });
-        return;
-      }
-      if (status === 403) {
-        dispatch(routerRedux.push('/exception/403'));
-        return;
-      }
-      if (status <= 504 && status >= 500) {
-        dispatch(routerRedux.push('/exception/500'));
-        return;
-      }
-      if (status >= 404 && status < 422) {
-        dispatch(routerRedux.push('/exception/404'));
-      }
+  try {
+    const response = checkStatus(await fetch(url, newOptions));
+    if (newOptions.method === 'DELETE' || response.status === 204) {
+      return response.text();
+    }
+    const data = await response.json();
+    if (data.success) {
+      return data;
+    }
+    notification.error({
+      message: `出错了！`,
+      description: data.message,
     });
+    return {};
+  } catch (e) {
+    const { dispatch } = store;
+    const status = e.name;
+    if (status === 401) {
+      dispatch({
+        type: 'login/logout',
+      });
+      return;
+    }
+    if (status === 403) {
+      dispatch(routerRedux.push('/exception/403'));
+      return;
+    }
+    if (status <= 504 && status >= 500) {
+      dispatch(routerRedux.push('/exception/500'));
+      return;
+    }
+    if (status >= 404 && status < 422) {
+      dispatch(routerRedux.push('/exception/404'));
+    }
+  }
 }

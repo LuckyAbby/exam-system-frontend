@@ -18,8 +18,10 @@ export default{
     },
 
     *create({ payload, callback }, { call }) {
-      yield call(create, payload);
-      if(_.isFunction(callback)) callback();
+      const res = yield call(create, payload);
+      if (res.success) {
+        if(_.isFunction(callback)) callback();
+      }
     },
 
     *deleteExaminee({ payload, callback }, { call }) {
