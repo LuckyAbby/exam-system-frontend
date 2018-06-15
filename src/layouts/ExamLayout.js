@@ -109,6 +109,7 @@ class BasicLayout extends React.PureComponent {
       collapsed,
       routerData,
       match,
+      smsCount,
     } = this.props;
     const bashRedirect = this.getBashRedirect();
     
@@ -120,6 +121,7 @@ class BasicLayout extends React.PureComponent {
             collapsed={collapsed}
             onMenuClick={this.handleMenuClick}
             title="校招考试系统"
+            smsCount={smsCount}
           />
         </Header>
         <Content style={{ margin: '24px 24px 0', height: '100%' }}>
@@ -177,4 +179,5 @@ class BasicLayout extends React.PureComponent {
 export default connect(({ user, global }) => ({
   currentUser: user.currentUser,
   collapsed: global.collapsed,
+  smsCount: global.smsCount,
 }))(BasicLayout);

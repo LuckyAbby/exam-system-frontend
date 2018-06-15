@@ -77,6 +77,12 @@ export default async function request(url, options) {
       message: `出错了！`,
       description: data.message,
     });
+    if (data.message === '未登录') {
+      const { dispatch } = store;      
+       dispatch({
+        type: 'login/logout',
+      });
+    }
     return {};
   } catch (e) {
     const { dispatch } = store;

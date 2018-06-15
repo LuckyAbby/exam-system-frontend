@@ -1,8 +1,22 @@
 import React, { PureComponent } from 'react';
 import { Menu, Icon, Spin, Dropdown, Avatar } from 'antd';
+import _ from 'lodash';
 import Debounce from 'lodash-decorators/debounce';
 import { Link } from 'dva/router';
 import styles from './index.less';
+
+function foo(str){
+    const s =`0${str}`;
+    return s.substring(s.length-2,s.length);
+}
+
+ function secondToDate(data) {
+    const h = Math.floor(data / 3600);
+    const m = Math.floor((data / 60 % 60));
+    const s = Math.floor((data % 60));
+    const result = `${foo(h)  } : ${  foo(m)  } : ${  foo(s)  }`;
+    return result;
+}
 
 export default class GlobalHeader extends PureComponent {
   componentWillUnmount() {
@@ -27,6 +41,7 @@ export default class GlobalHeader extends PureComponent {
       collapsed,
       onMenuClick,
       title,
+      smsCount,
     } = this.props;
     
     const menu = (
@@ -56,6 +71,14 @@ export default class GlobalHeader extends PureComponent {
             />
           )
         }
+        {
+          _.isNumber(smsCount) && smsCount >= 0 && (
+            <div className={styles.countdown}>
+              {secondToDate(smsCount)}
+            </div>
+          )
+        }
+        
         
         <div className={styles.right}>
           {currentUser.name ? (

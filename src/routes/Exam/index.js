@@ -5,7 +5,7 @@ import { Link } from 'dva/router';
 import moment from 'moment';
 import styles from './index.less';
 
-const STATE = ['未上线', '已上线', '已下线'];
+// const STATE = ['未上线', '已上线', '已下线'];
 
 
 const mapStateToProps = ({
@@ -46,7 +46,8 @@ class Exam extends PureComponent {
 
   render() {
     const { exam, loading } = this.props;
-    const { exams, examPaper } = exam;
+    const { exams } = exam;
+    
     const columns = [
       {
         title: '考试名称',

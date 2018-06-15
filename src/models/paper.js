@@ -9,9 +9,17 @@ export default {
 
   effects: {
     *fetch({ payload }, { call, put }) {
-      console.log('payload :',payload);
-      
       const { content } = yield call(paperService.fetch, payload);
+      if (content.paper) {
+        const { paper } = content;
+        // eslint-disable-next-line
+        const time = paper.exam_info.time;
+          yield put({
+          type: 'global/startCountdown',
+          payload: { COUNT: time * 60 },
+        });
+      }
+    
       yield put({
         type: 'save',
         payload: {...content },

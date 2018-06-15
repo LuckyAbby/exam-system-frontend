@@ -33,7 +33,7 @@
     "dva-loading": "^1.0.4",
     "enquire-js": "^0.2.1",
     "less": "2.7.2",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.10",
     "lodash-decorators": "^4.4.1",
     "moment": "^2.19.1",
     "numeral": "^2.0.6",
@@ -48,6 +48,7 @@
     "react-dom": "^16.2.0",
     "react-fittext": "^1.0.0",
     "rollbar": "^2.3.4",
+    "universal-cookie": "^2.1.5",
     "url-polyfill": "^1.0.10"
   },
   "devDependencies": {
