@@ -155,13 +155,9 @@ class Add extends Component {
     }, {
       title: '考试id',
       dataIndex: 'exam_id',
-    }, {
-      title: '操作',
-      render: () => (
-        <div>
-          <a href="">详情</a>
-        </div>),
-    }];
+      render: val => `201800${val}`,
+    },
+  ];
 
     return (
       <div>

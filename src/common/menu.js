@@ -81,18 +81,18 @@ const menuData = [
       },
     ],
   },
-  {
-    name: '阅卷管理',
-    icon: 'team',
-    path: 'exam/:id/checkPaper',
-    authority: 'admin',
-    children: [
-      {
-        name: '试卷列表',
-        path: 'list',
-      },
-    ],
-  },
+  // {
+  //   name: '阅卷管理',
+  //   icon: 'team',
+  //   path: 'exam/:id/checkPaper',
+  //   authority: 'admin',
+  //   children: [
+  //     {
+  //       name: '试卷列表',
+  //       path: 'list',
+  //     },
+  //   ],
+  // },
 ];
 
 function replaceParams(path, params) {

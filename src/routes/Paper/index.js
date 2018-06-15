@@ -50,14 +50,14 @@ class Paper extends Component {
   renderForm = (id) => {
     return (
       <Form layout="inline">
-        <FormItem
+        {/* <FormItem
           label="试卷名称"
         >
           <Input />
         </FormItem>
         <FormItem>
           <Button type="primary" htmlType="submit" onClick={() => this.search()}>查询</Button>
-        </FormItem>
+        </FormItem> */}
         <FormItem>
           <Button icon="plus" type="primary">
             <Link to={`/exam/${id}/paper/add`}>新建试卷</Link>

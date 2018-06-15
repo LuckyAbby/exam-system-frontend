@@ -57,14 +57,14 @@ class Question extends Component {
   renderForm = (id) => {
     return (
       <Form layout="inline">
-        <FormItem
+        {/* <FormItem
           label="试题名称"
         >
           <Input />
         </FormItem>
         <FormItem>
           <Button type="primary" htmlType="submit" onClick={() => this.search()}>查询</Button>
-        </FormItem>
+        </FormItem> */}
         <FormItem>
           <Button icon="plus" type="primary">
             <Link to={`/exam/${id}/question/add`}>新建试题</Link>

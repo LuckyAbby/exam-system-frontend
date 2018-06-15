@@ -79,7 +79,7 @@ class Exam extends PureComponent {
   renderForm = () => {
     return (
       <Form layout="inline">
-        <FormItem
+        {/* <FormItem
           label="考试名称"
         >
           {this.props.form.getFieldDecorator('searchName', {})
@@ -87,7 +87,7 @@ class Exam extends PureComponent {
         </FormItem>
         <FormItem>
           <Button type="primary" htmlType="submit" onClick={() => this.search()}>查询</Button>
-        </FormItem>
+        </FormItem> */}
         <FormItem>
           <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>新建考试</Button>
         </FormItem>
@@ -150,7 +150,7 @@ class Exam extends PureComponent {
               <div className={styles.action}>
                 <a onClick={() => this.delete(text.id)}>删除</a>
                 <Link to={`/exam/${text.id}`}>编辑</Link>
-                <a href="">上线</a>
+                {/* <a href="">上线</a> */}
               </div>
             );
           } else if (text.state === 1) {
@@ -158,7 +158,7 @@ class Exam extends PureComponent {
               <div className={styles.action}>
                 <a onClick={() => this.delete(text.id)}>删除</a>
                 <Link to={`/exam/${text.id}`}>编辑</Link>
-                <a href="">下线</a>
+                {/* <a href="">下线</a> */}
               </div>
             );
           } else {
@@ -166,7 +166,7 @@ class Exam extends PureComponent {
               <div className={styles.action}>
                 <a onClick={() =>this.delete(text.id)}>删除</a>
                 <Link to={`/exam/${text.id}`}>编辑</Link>
-                <a href="">重新上线</a>
+                {/* <a href="">重新上线</a> */}
               </div>
             );
           }

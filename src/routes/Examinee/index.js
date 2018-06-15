@@ -81,14 +81,14 @@ class Examinee extends Component {
   renderForm = () => {
     return (
       <Form layout="inline">
-        <FormItem
+        {/* <FormItem
           label="考生帐号"
         >
           <Input />
         </FormItem>
         <FormItem>
           <Button type="primary" htmlType="submit" onClick={() => this.search()}>查询</Button>
-        </FormItem>
+        </FormItem> */}
         <FormItem>
           <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
             新增考生信息
@@ -128,7 +128,7 @@ class Examinee extends Component {
       render: (text) => (
         <div className={styles.action}>
           <a onClick={() => this.delete(text.id)}>删除</a>
-          <a href="">编辑</a>
+          {/* <a href="">编辑</a> */}
         </div>
       ),
     }];
